@@ -28,11 +28,11 @@ export class UserService {
     const { email, password } = registerData;
     const hashedPassword = await hashPassword(password);
 
-    // const findUser = await this.userRepository.findOne({ email: email });
+    const findUser = await this.userRepository.findOne({ email: email });
 
-    // if (findUser) {
-    //   throw new HttpException('Email already registered', HttpStatus.CONFLICT);
-    // }
+    if (findUser) {
+      throw new HttpException('Email already registered', HttpStatus.CONFLICT);
+    }
 
     const newUser = await this.userRepository.save({
       email: email,
