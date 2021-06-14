@@ -1,4 +1,4 @@
-export interface RegisterUserResponse {
+export type GetUserResponse = {
   id: string;
   email: string;
-}
+};

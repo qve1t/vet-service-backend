@@ -1,0 +1,68 @@
+import { Test, TestingModule } from '@nestjs/testing';
+import { GetUserResponse } from 'src/interfaces/user';
+import { registerDto } from '../dto/register.dto';
+import { UserController } from '../user.controller';
+import { UserService } from '../user.service';
+import { UserServiceMock, userMockResponse } from './mocks/user.service.mock';
+
+describe('UserController', () => {
+  let controller: UserController;
+  let service: UserService;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [UserController],
+      providers: [UserService],
+    })
+      .overrideProvider(UserService)
+      .useValue(UserServiceMock)
+      .compile();
+
+    controller = module.get<UserController>(UserController);
+    service = module.get<UserService>(UserService);
+  });
+
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
+
+  describe('getAllUsers', () => {
+    describe('when getAllUsers is called', () => {
+      let users: GetUserResponse[];
+
+      beforeEach(async () => {
+        users = await controller.getAllUsers();
+      });
+
+      it('it should call UserService', () => {
+        expect(service.returnAllUsers).toBeCalledWith();
+      });
+
+      it('it should return an array of users', () => {
+        expect(users).toEqual([userMockResponse]);
+      });
+    });
+  });
+  describe('registerUser', () => {
+    describe('when registerUser is called', () => {
+      let user: GetUserResponse;
+      let registerUserDto: registerDto;
+
+      beforeEach(async () => {
+        registerUserDto = {
+          email: userMockResponse.email,
+          password: 'testpassword',
+        };
+        user = await controller.registerUser(registerUserDto);
+      });
+
+      it('it should call UserService', () => {
+        expect(service.registerUser).toBeCalledWith(registerUserDto);
+      });
+
+      it('it should return a response with user', () => {
+        expect(user).toEqual(userMockResponse);
+      });
+    });
+  });
+});

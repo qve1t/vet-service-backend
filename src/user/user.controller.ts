@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 
-import { RegisterUserResponse } from '../interfaces/user';
+import { GetUserResponse } from '../interfaces/user';
 import { registerDto } from './dto/register.dto';
 import { UserService } from './user.service';
 
@@ -9,7 +9,7 @@ export class UserController {
   constructor(private readonly userSrevice: UserService) {}
 
   @Get('/')
-  async getAllUsers(): Promise<RegisterUserResponse[]> {
+  async getAllUsers(): Promise<GetUserResponse[]> {
     return await this.userSrevice.returnAllUsers();
   }
 
@@ -17,7 +17,7 @@ export class UserController {
   @Post('/register')
   async registerUser(
     @Body() registerData: registerDto,
-  ): Promise<RegisterUserResponse> {
+  ): Promise<GetUserResponse> {
     return await this.userSrevice.registerUser(registerData);
   }
 }
