@@ -13,7 +13,7 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  private filterUserObject(user: User): GetUserResponse {
+  filterUserObject(user: User): GetUserResponse {
     const { id, email } = user;
     return { id, email };
   }

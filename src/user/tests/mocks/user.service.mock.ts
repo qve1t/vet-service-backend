@@ -1,11 +1,6 @@
-import { GetUserResponse } from '../../../interfaces/user';
-
-export const userMockResponse: GetUserResponse = {
-  id: 'testid',
-  email: 'testemail@test.com',
-};
+import { userStubResponse } from '../stubs/user.stub';
 
 export const UserServiceMock = {
-  returnAllUsers: jest.fn().mockResolvedValue([userMockResponse]),
-  registerUser: jest.fn().mockResolvedValue(userMockResponse),
+  returnAllUsers: jest.fn().mockResolvedValue([userStubResponse]),
+  registerUser: jest.fn().mockResolvedValue(userStubResponse),
 };

@@ -3,7 +3,8 @@ import { GetUserResponse } from 'src/interfaces/user';
 import { registerDto } from '../dto/register.dto';
 import { UserController } from '../user.controller';
 import { UserService } from '../user.service';
-import { UserServiceMock, userMockResponse } from './mocks/user.service.mock';
+import { UserServiceMock } from './mocks/user.service.mock';
+import { userStubResponse } from './stubs/user.stub';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -34,12 +35,12 @@ describe('UserController', () => {
         users = await controller.getAllUsers();
       });
 
-      it('it should call UserService', () => {
+      it('should call UserService', () => {
         expect(service.returnAllUsers).toBeCalledWith();
       });
 
-      it('it should return an array of users', () => {
-        expect(users).toEqual([userMockResponse]);
+      it('should return an array of users', () => {
+        expect(users).toEqual([userStubResponse]);
       });
     });
   });
@@ -50,7 +51,7 @@ describe('UserController', () => {
 
       beforeEach(async () => {
         registerUserDto = {
-          email: userMockResponse.email,
+          email: userStubResponse.email,
           password: 'testpassword',
         };
         user = await controller.registerUser(registerUserDto);
@@ -61,7 +62,7 @@ describe('UserController', () => {
       });
 
       it('it should return a response with user', () => {
-        expect(user).toEqual(userMockResponse);
+        expect(user).toEqual(userStubResponse);
       });
     });
   });
