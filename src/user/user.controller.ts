@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 
 import { GetUserResponse } from '../interfaces/user';
+import { changePasswordDto } from './dto/changePassword.dto';
 import { registerDto } from './dto/register.dto';
 import { UserService } from './user.service';
 
@@ -13,11 +14,17 @@ export class UserController {
     return await this.userSrevice.returnAllUsers();
   }
 
-  //add validation pipe and tests
   @Post('/register')
   async registerUser(
     @Body() registerData: registerDto,
   ): Promise<GetUserResponse> {
     return await this.userSrevice.registerUser(registerData);
+  }
+
+  @Patch('/change_password')
+  async changePassword(
+    @Body() changePasswordData: changePasswordDto,
+  ): Promise<GetUserResponse> {
+    return await this.userSrevice.changePassword(changePasswordData);
   }
 }

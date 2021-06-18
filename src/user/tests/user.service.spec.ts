@@ -8,6 +8,7 @@ import { UserService } from '../user.service';
 import * as hashingUtil from '../../utils/passwordHash';
 import { UserRepositoryMock } from './mocks/user.repository.mock';
 import { userStub, secondUserStub } from './stubs/user.stub';
+import { changePasswordDto } from '../dto/changePassword.dto';
 
 describe('UserService', () => {
   let service: UserService;
@@ -26,6 +27,8 @@ describe('UserService', () => {
 
     service = module.get<UserService>(UserService);
     repository = module.get(getRepositoryToken(User));
+
+    jest.clearAllMocks();
   });
 
   it('should be defined', () => {
@@ -100,7 +103,7 @@ describe('UserService', () => {
 
       it('should hash the password', () => {
         expect(hashingUtil.hashPassword).toBeCalledWith(
-          secondUserStub.password,
+          registerUserDto.password,
         );
       });
 
@@ -119,6 +122,57 @@ describe('UserService', () => {
         expect(savedUser).toEqual({
           id: secondUserStub.id,
           email: secondUserStub.email,
+        });
+      });
+    });
+  });
+
+  describe('changePassword', () => {
+    describe('when changePassword is called', () => {
+      let savedUser: GetUserResponse;
+      let changePasswordDto: changePasswordDto;
+      let hashedNewPassword: string;
+
+      beforeEach(async () => {
+        changePasswordDto = {
+          email: userStub.email,
+          newPassword: userStub.password,
+        };
+        jest.spyOn(hashingUtil, 'hashPassword').mockResolvedValue('abcd123');
+        jest.spyOn(repository, 'findOne').mockResolvedValue(userStub);
+        jest.spyOn(service, 'filterUserObject');
+        hashedNewPassword = 'abcd123';
+        savedUser = await service.changePassword(changePasswordDto);
+      });
+
+      it('should check if user exists', () => {
+        expect(repository.findOne).toBeCalledWith({
+          email: changePasswordDto.email,
+        });
+      });
+
+      it('should hash the password', () => {
+        expect(hashingUtil.hashPassword).toBeCalledWith(
+          changePasswordDto.newPassword,
+        );
+      });
+
+      it('should change users password and save user', () => {
+        expect(repository.save).toBeCalledWith({
+          id: userStub.id,
+          email: changePasswordDto.email,
+          password: hashedNewPassword,
+        });
+      });
+
+      it('should filter response from db', () => {
+        expect(service.filterUserObject).toBeCalled();
+      });
+
+      it('should return an array of formatted users', () => {
+        expect(savedUser).toEqual({
+          id: userStub.id,
+          email: userStub.email,
         });
       });
     });

@@ -5,6 +5,7 @@ import { GetUserResponse } from 'src/interfaces/user';
 import { registerDto } from './dto/register.dto';
 import { User } from './user.entity';
 import { hashPassword } from '../utils/passwordHash';
+import { changePasswordDto } from './dto/changePassword.dto';
 
 @Injectable()
 export class UserService {
@@ -26,7 +27,6 @@ export class UserService {
 
   async registerUser(registerData: registerDto): Promise<GetUserResponse> {
     const { email, password } = registerData;
-    const hashedPassword = await hashPassword(password);
 
     const findUser = await this.userRepository.findOne({ email: email });
 
@@ -34,11 +34,32 @@ export class UserService {
       throw new HttpException('Email already registered', HttpStatus.CONFLICT);
     }
 
+    const hashedPassword = await hashPassword(password);
+
     const newUser = await this.userRepository.save({
       email: email,
       password: hashedPassword,
     });
 
     return this.filterUserObject(newUser);
+  }
+
+  async changePassword(
+    newPasswordData: changePasswordDto,
+  ): Promise<GetUserResponse> {
+    const { email, newPassword } = newPasswordData;
+    const foundUser = await this.userRepository.findOne({ email: email });
+
+    if (!foundUser) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    const hashedNewPassword = await hashPassword(newPassword);
+
+    foundUser.password = hashedNewPassword;
+
+    await this.userRepository.save(foundUser);
+
+    return this.filterUserObject(foundUser);
   }
 }

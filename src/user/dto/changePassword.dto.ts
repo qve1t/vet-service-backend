@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 
-export class registerDto {
+export class changePasswordDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -8,5 +8,5 @@ export class registerDto {
   @IsNotEmpty()
   @MinLength(6)
   @MaxLength(32)
-  password: string;
+  newPassword: string;
 }

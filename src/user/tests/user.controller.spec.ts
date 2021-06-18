@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetUserResponse } from 'src/interfaces/user';
+import { changePasswordDto } from '../dto/changePassword.dto';
 import { registerDto } from '../dto/register.dto';
 import { UserController } from '../user.controller';
 import { UserService } from '../user.service';
@@ -21,6 +22,8 @@ describe('UserController', () => {
 
     controller = module.get<UserController>(UserController);
     service = module.get<UserService>(UserService);
+
+    jest.clearAllMocks();
   });
 
   it('should be defined', () => {
@@ -59,6 +62,28 @@ describe('UserController', () => {
 
       it('it should call UserService', () => {
         expect(service.registerUser).toBeCalledWith(registerUserDto);
+      });
+
+      it('it should return a response with user', () => {
+        expect(user).toEqual(userStubResponse);
+      });
+    });
+  });
+  describe('changePassword', () => {
+    describe('when changePassword is called', () => {
+      let user: GetUserResponse;
+      let changePasswordDto: changePasswordDto;
+
+      beforeEach(async () => {
+        changePasswordDto = {
+          email: userStubResponse.email,
+          newPassword: 'testnewpassword',
+        };
+        user = await controller.changePassword(changePasswordDto);
+      });
+
+      it('it should call UserService', () => {
+        expect(service.changePassword).toBeCalledWith(changePasswordDto);
       });
 
       it('it should return a response with user', () => {
