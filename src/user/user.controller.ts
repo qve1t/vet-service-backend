@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Patch, Post } from '@nestjs/common';
 
 import { GetUserResponse } from '../interfaces/user';
 import { changePasswordDto } from './dto/changePassword.dto';
@@ -7,7 +7,7 @@ import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userSrevice: UserService) {}
+  constructor(@Inject(UserService) private readonly userSrevice: UserService) {}
 
   @Get('/')
   async getAllUsers(): Promise<GetUserResponse[]> {
