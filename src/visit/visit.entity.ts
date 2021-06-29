@@ -17,7 +17,19 @@ export class Visit implements VisitInterface {
     type: 'longtext',
     default: '',
   })
+  interview: string;
+
+  @Column({
+    type: 'longtext',
+    default: '',
+  })
   description: string;
+
+  @Column({
+    type: 'longtext',
+    default: '',
+  })
+  healing: string;
 
   @ManyToOne(() => Pet, (entity) => entity.visits)
   petOnVisit: Pet;

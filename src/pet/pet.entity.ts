@@ -1,4 +1,4 @@
-import { PetInterface } from 'src/interfaces/pet';
+import { PetInterface, PetSexes } from 'src/interfaces/pet';
 import { Owner } from 'src/owner/owner.entity';
 import { Visit } from 'src/visit/visit.entity';
 import {
@@ -23,6 +23,12 @@ export class Pet implements PetInterface {
   })
   chipId: string | null;
 
+  @Column({
+    nullable: true,
+    default: null,
+  })
+  tatooId: string | null;
+
   @Column()
   type: string;
 
@@ -38,6 +44,12 @@ export class Pet implements PetInterface {
     type: 'int',
   })
   age: number | null;
+
+  @Column({
+    type: 'enum',
+    enum: PetSexes,
+  })
+  sex: PetSexes;
 
   @Column({
     nullable: true,

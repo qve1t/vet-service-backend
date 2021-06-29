@@ -1,15 +1,22 @@
 export interface OwnerInterface {
-  id: string;
   name: string;
   surname: string;
   phone: string | null;
   email: string | null;
+  address: string | null;
 }
 
-export type GetUserResponse = OwnerInterface;
+export type GetOwnerResponse = OwnerInterface;
 
-export type GetAllUsersResponse = {
+export type GetAllOwnersResponse = {
   id: string;
   name: string;
   surname: string;
 };
+
+export interface OwnerRegisterResponse {
+  id: string;
+  status: string;
+}
+
+export type OwnerDeleteResponse = OwnerRegisterResponse;
