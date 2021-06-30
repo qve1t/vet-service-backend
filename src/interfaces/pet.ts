@@ -26,3 +26,5 @@ export interface PetRegisterResponse {
 }
 
 export type PetDeleteResponse = PetRegisterResponse;
+
+export type AssignOwnerToPetResponse = PetRegisterResponse;

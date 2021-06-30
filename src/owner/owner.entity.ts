@@ -36,6 +36,12 @@ export class Owner implements OwnerInterface {
   })
   email: string | null;
 
+  @Column({
+    nullable: true,
+    default: null,
+  })
+  address: string | null;
+
   @OneToMany(() => Pet, (entity) => entity.owner)
   pets: Pet[];
 
