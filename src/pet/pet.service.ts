@@ -3,10 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   AssignOwnerToPetResponse,
   PetDeleteResponse,
+  PetListResponse,
+  PetQueryInterface,
   PetRegisterResponse,
 } from 'src/interfaces/pet';
 import { Owner } from 'src/owner/owner.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { assignOwnerToPetDto } from './dto/assignOwnerToPet';
 import { registerPetDto } from './dto/registerPet.dto';
 import { Pet } from './pet.entity';
@@ -27,6 +29,44 @@ export class PetService {
     return {
       id: newPet.id,
       status: 'ok',
+    };
+  }
+
+  async getPetDetails(petId: string): Promise<Pet> {
+    const petToGet = await this.petRepository.findOne(petId, {
+      relations: ['owner'],
+    });
+    if (!petToGet) {
+      throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
+    }
+
+    return petToGet;
+  }
+
+  async getPetsList(query: PetQueryInterface): Promise<PetListResponse> {
+    const page = query.page || 0;
+    const limit = query.limit || 10;
+    const name = query.name || '';
+
+    const [petList, count] = await this.petRepository
+      .createQueryBuilder('pet')
+      .leftJoinAndSelect('pet.owner', 'owner')
+      .select([
+        'pet.id',
+        'pet.name',
+        'pet.type',
+        'owner.id',
+        'owner.name',
+        'owner.surname',
+      ])
+      .skip(page * limit)
+      .take(limit)
+      .where({ name: Like(`%${name}%`) })
+      .getManyAndCount();
+
+    return {
+      results: petList,
+      count: count,
     };
   }
 

@@ -3,10 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   AssignPetToOwnerResponse,
   OwnerDeleteResponse,
+  OwnerListResponse,
+  OwnerQueryInterface,
   OwnerRegisterResponse,
 } from 'src/interfaces/owner';
 import { Pet } from 'src/pet/pet.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { assignPetToOwnerDto } from './dto/assignPetToOwnerDto';
 import { registerOwnerDto } from './dto/registerOwnerDto';
 import { Owner } from './owner.entity';
@@ -18,6 +20,49 @@ export class OwnerService {
     @InjectRepository(Pet) private petRepository: Repository<Pet>,
   ) {}
 
+  async getOwnerDetails(ownerId: string): Promise<Owner> {
+    const ownerToGet = await this.ownerRepository
+      .createQueryBuilder('owner')
+      .leftJoinAndSelect('owner.pets', 'pets')
+      .where({ id: ownerId })
+      .select([
+        'owner.name',
+        'owner.surname',
+        'owner.phone',
+        'owner.email',
+        'owner.address',
+        'pets.id',
+        'pets.name',
+      ])
+      .getOne();
+
+    if (!ownerToGet) {
+      throw new HttpException('Owner not found', HttpStatus.NOT_FOUND);
+    }
+
+    return ownerToGet;
+  }
+
+  async getOwnersList(query: OwnerQueryInterface): Promise<OwnerListResponse> {
+    const page = query.page || 0;
+    const limit = query.limit || 10;
+    const nameSurname = query.nameSurname || '';
+
+    const [ownersList, count] = await this.ownerRepository.findAndCount({
+      where: [
+        { name: Like(`%${nameSurname}%`) },
+        { surname: Like(`%${nameSurname}%`) },
+      ],
+      select: ['id', 'name', 'surname'],
+      skip: page * limit,
+      take: limit,
+    });
+
+    return {
+      results: ownersList,
+      count: count,
+    };
+  }
   async registerNewOwner(
     registerOwnerData: registerOwnerDto,
   ): Promise<OwnerRegisterResponse> {

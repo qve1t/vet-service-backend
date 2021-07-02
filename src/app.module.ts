@@ -8,7 +8,13 @@ import { PetModule } from './pet/pet.module';
 import { VisitModule } from './visit/visit.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), UserModule, OwnerModule, PetModule, VisitModule],
+  imports: [
+    TypeOrmModule.forRoot(),
+    UserModule,
+    OwnerModule,
+    PetModule,
+    VisitModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

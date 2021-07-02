@@ -20,10 +20,29 @@ export interface PetInterface {
   others: string | null;
 }
 
+export interface PetListInterface {
+  id: string;
+  name: string;
+  type: string;
+  owner: {
+    id: string;
+    name: string;
+    surname: string;
+  };
+}
+
+export interface PetQueryInterface {
+  limit: number;
+  page: number;
+  name: string;
+}
+
 export interface PetRegisterResponse {
   id: string;
   status: string;
 }
+
+export type PetListResponse = { results: PetListInterface[]; count: number };
 
 export type PetDeleteResponse = PetRegisterResponse;
 

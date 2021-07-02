@@ -6,6 +6,18 @@ export interface OwnerInterface {
   address: string | null;
 }
 
+export interface OwnerQueryInterface {
+  page: number;
+  limit: number;
+  nameSurname: string;
+}
+
+export interface OwnerListInterface {
+  id: string;
+  name: string;
+  surname: string;
+}
+
 export type GetOwnerResponse = OwnerInterface;
 
 export type GetAllOwnersResponse = {
@@ -18,6 +30,11 @@ export interface OwnerRegisterResponse {
   id: string;
   status: string;
 }
+
+export type OwnerListResponse = {
+  results: OwnerListInterface[];
+  count: number;
+};
 
 export type OwnerDeleteResponse = OwnerRegisterResponse;
 
