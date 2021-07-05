@@ -1,7 +1,7 @@
-import { OwnerInterface } from 'src/interfaces/owner';
-import { Pet } from 'src/pet/pet.entity';
-import { Visit } from 'src/visit/visit.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { OwnerInterface } from '../interfaces/owner';
+import { Pet } from '../pet/pet.entity';
+import { Visit } from '../visit/visit.entity';
 
 @Entity()
 export class Owner implements OwnerInterface {

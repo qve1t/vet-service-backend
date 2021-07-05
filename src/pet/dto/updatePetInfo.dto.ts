@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-import { PetInfoToUpdateInterface } from 'src/interfaces/pet';
+import { PetInfoToUpdateInterface } from '../../interfaces/pet';
 
 export class updatePetInfoDto implements PetInfoToUpdateInterface {
   @IsString()

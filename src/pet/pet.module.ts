@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Owner } from 'src/owner/owner.entity';
+import { Owner } from '../owner/owner.entity';
 import { PetController } from './pet.controller';
 import { Pet } from './pet.entity';
 import { PetService } from './pet.service';

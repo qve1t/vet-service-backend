@@ -5,7 +5,7 @@ import {
   IsPhoneNumber,
   MaxLength,
 } from 'class-validator';
-import { OwnerInterface } from 'src/interfaces/owner';
+import { OwnerInterface } from '../../interfaces/owner';
 
 export class registerOwnerDto implements OwnerInterface {
   @IsNotEmpty()

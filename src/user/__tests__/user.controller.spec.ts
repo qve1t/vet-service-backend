@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetUserResponse } from 'src/interfaces/user';
+import { GetUserResponse } from '../../interfaces/user';
 import { changePasswordDto } from '../dto/changePassword.dto';
 import { registerDto } from '../dto/register.dto';
 import { UserController } from '../user.controller';

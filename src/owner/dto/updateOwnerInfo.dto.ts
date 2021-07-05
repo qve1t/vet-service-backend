@@ -6,7 +6,7 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { OwnerInfoToUpdate } from 'src/interfaces/owner';
+import { OwnerInfoToUpdate } from '../../interfaces/owner';
 
 export class updateOwnerInfoDto implements OwnerInfoToUpdate {
   @IsString()

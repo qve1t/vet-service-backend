@@ -18,7 +18,7 @@ import {
   OwnerQueryInterface,
   OwnerRegisterResponse,
   OwnerUpdateResponse,
-} from 'src/interfaces/owner';
+} from '../interfaces/owner';
 import { assignPetToOwnerDto } from './dto/assignPetToOwnerDto';
 import { registerOwnerDto } from './dto/registerOwnerDto';
 import { updateOwnerInfoDto } from './dto/updateOwnerInfo.dto';

@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Like, Repository } from 'typeorm';
 import {
   AssignPetToOwnerResponse,
   OwnerDeleteResponse,
@@ -7,9 +8,8 @@ import {
   OwnerQueryInterface,
   OwnerRegisterResponse,
   OwnerUpdateResponse,
-} from 'src/interfaces/owner';
-import { Pet } from 'src/pet/pet.entity';
-import { Like, Repository } from 'typeorm';
+} from '../interfaces/owner';
+import { Pet } from '../pet/pet.entity';
 import { assignPetToOwnerDto } from './dto/assignPetToOwnerDto';
 import { registerOwnerDto } from './dto/registerOwnerDto';
 import { updateOwnerInfoDto } from './dto/updateOwnerInfo.dto';

@@ -18,7 +18,7 @@ import {
   PetQueryInterface,
   PetRegisterResponse,
   PetUpdateResponse,
-} from 'src/interfaces/pet';
+} from '../interfaces/pet';
 import { assignOwnerToPetDto } from './dto/assignOwnerToPet';
 import { registerPetDto } from './dto/registerPet.dto';
 import { updatePetInfoDto } from './dto/updatePetInfo.dto';

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { GetUserResponse } from 'src/interfaces/user';
 import { Repository } from 'typeorm';
+import { GetUserResponse } from '../../interfaces/user';
 import { registerDto } from '../dto/register.dto';
 import { User } from '../user.entity';
 import { UserService } from '../user.service';

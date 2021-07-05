@@ -41,7 +41,7 @@ export interface PetListInterface {
     id: string;
     name: string;
     surname: string;
-  };
+  } | null;
 }
 
 export interface PetQueryInterface {

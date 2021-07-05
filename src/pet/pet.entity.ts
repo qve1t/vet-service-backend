@@ -1,6 +1,6 @@
-import { PetInterface, PetSexes } from 'src/interfaces/pet';
-import { Owner } from 'src/owner/owner.entity';
-import { Visit } from 'src/visit/visit.entity';
+import { PetInterface, PetSexes } from '../interfaces/pet';
+import { Owner } from '../owner/owner.entity';
+import { Visit } from '../visit/visit.entity';
 import {
   Entity,
   Column,

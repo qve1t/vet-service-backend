@@ -1,5 +1,5 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
-import { PetInterface, PetSexes } from 'src/interfaces/pet';
+import { PetInterface, PetSexes } from '../../interfaces/pet';
 
 export class registerPetDto implements PetInterface {
   @IsString()
