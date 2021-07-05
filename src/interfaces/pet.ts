@@ -20,6 +20,19 @@ export interface PetInterface {
   others: string | null;
 }
 
+export interface PetInfoToUpdateInterface {
+  id: string;
+  chipId: string | null;
+  tatooId: string | null;
+  race: string | null;
+  age: number | null;
+  weight: number | null;
+  height: number | null;
+  length: number | null;
+  diseases: string | null;
+  others: string | null;
+}
+
 export interface PetListInterface {
   id: string;
   name: string;
@@ -45,5 +58,7 @@ export interface PetRegisterResponse {
 export type PetListResponse = { results: PetListInterface[]; count: number };
 
 export type PetDeleteResponse = PetRegisterResponse;
+
+export type PetUpdateResponse = PetRegisterResponse;
 
 export type AssignOwnerToPetResponse = PetRegisterResponse;

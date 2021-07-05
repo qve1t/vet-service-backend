@@ -6,6 +6,7 @@ import {
   Inject,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Put,
   Query,
@@ -16,9 +17,11 @@ import {
   PetListResponse,
   PetQueryInterface,
   PetRegisterResponse,
+  PetUpdateResponse,
 } from 'src/interfaces/pet';
 import { assignOwnerToPetDto } from './dto/assignOwnerToPet';
 import { registerPetDto } from './dto/registerPet.dto';
+import { updatePetInfoDto } from './dto/updatePetInfo.dto';
 import { Pet } from './pet.entity';
 import { PetService } from './pet.service';
 
@@ -45,6 +48,13 @@ export class PetController {
     @Body() registerPetData: registerPetDto,
   ): Promise<PetRegisterResponse> {
     return await this.petService.registerNewPet(registerPetData);
+  }
+
+  @Patch('/update')
+  async updatePetInfo(
+    @Body() updatePetInfoData: updatePetInfoDto,
+  ): Promise<PetUpdateResponse> {
+    return await this.petService.updatePetInfo(updatePetInfoData);
   }
 
   @Delete('/delete/:petId')

@@ -6,11 +6,13 @@ import {
   PetListResponse,
   PetQueryInterface,
   PetRegisterResponse,
+  PetUpdateResponse,
 } from 'src/interfaces/pet';
 import { Owner } from 'src/owner/owner.entity';
 import { Like, Repository } from 'typeorm';
 import { assignOwnerToPetDto } from './dto/assignOwnerToPet';
 import { registerPetDto } from './dto/registerPet.dto';
+import { updatePetInfoDto } from './dto/updatePetInfo.dto';
 import { Pet } from './pet.entity';
 
 @Injectable()
@@ -28,6 +30,25 @@ export class PetService {
 
     return {
       id: newPet.id,
+      status: 'ok',
+    };
+  }
+
+  async updatePetInfo(
+    updatePetInfoData: updatePetInfoDto,
+  ): Promise<PetUpdateResponse> {
+    let petToUpdate = await this.petRepository.findOne(updatePetInfoData.id);
+
+    if (!petToUpdate) {
+      throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
+    }
+
+    petToUpdate = { ...petToUpdate, ...updatePetInfoData };
+
+    await this.petRepository.save(petToUpdate);
+
+    return {
+      id: petToUpdate.id,
       status: 'ok',
     };
   }

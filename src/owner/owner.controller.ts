@@ -6,6 +6,7 @@ import {
   Inject,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Put,
   Query,
@@ -16,9 +17,11 @@ import {
   OwnerListResponse,
   OwnerQueryInterface,
   OwnerRegisterResponse,
+  OwnerUpdateResponse,
 } from 'src/interfaces/owner';
 import { assignPetToOwnerDto } from './dto/assignPetToOwnerDto';
 import { registerOwnerDto } from './dto/registerOwnerDto';
+import { updateOwnerInfoDto } from './dto/updateOwnerInfo.dto';
 import { Owner } from './owner.entity';
 import { OwnerService } from './owner.service';
 
@@ -33,6 +36,13 @@ export class OwnerController {
     @Query() query: OwnerQueryInterface,
   ): Promise<OwnerListResponse> {
     return await this.ownerService.getOwnersList(query);
+  }
+
+  @Patch('/update')
+  async updateOwnerInfo(
+    @Body() updateOwnerInfoData: updateOwnerInfoDto,
+  ): Promise<OwnerUpdateResponse> {
+    return await this.ownerService.updateOwnerInfo(updateOwnerInfoData);
   }
 
   @Get('/:ownerId')

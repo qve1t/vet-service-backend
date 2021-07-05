@@ -6,11 +6,13 @@ import {
   OwnerListResponse,
   OwnerQueryInterface,
   OwnerRegisterResponse,
+  OwnerUpdateResponse,
 } from 'src/interfaces/owner';
 import { Pet } from 'src/pet/pet.entity';
 import { Like, Repository } from 'typeorm';
 import { assignPetToOwnerDto } from './dto/assignPetToOwnerDto';
 import { registerOwnerDto } from './dto/registerOwnerDto';
+import { updateOwnerInfoDto } from './dto/updateOwnerInfo.dto';
 import { Owner } from './owner.entity';
 
 @Injectable()
@@ -19,6 +21,39 @@ export class OwnerService {
     @InjectRepository(Owner) private ownerRepository: Repository<Owner>,
     @InjectRepository(Pet) private petRepository: Repository<Pet>,
   ) {}
+
+  async registerNewOwner(
+    registerOwnerData: registerOwnerDto,
+  ): Promise<OwnerRegisterResponse> {
+    const newOwner = this.ownerRepository.create({ ...registerOwnerData });
+    await this.ownerRepository.save(newOwner);
+
+    return {
+      id: newOwner.id,
+      status: 'ok',
+    };
+  }
+
+  async updateOwnerInfo(
+    updateOwnerInfoData: updateOwnerInfoDto,
+  ): Promise<OwnerUpdateResponse> {
+    let ownerToUpdate = await this.ownerRepository.findOne(
+      updateOwnerInfoData.id,
+    );
+
+    if (!ownerToUpdate) {
+      throw new HttpException('Owner not found', HttpStatus.NOT_FOUND);
+    }
+
+    ownerToUpdate = { ...ownerToUpdate, ...updateOwnerInfoData };
+
+    await this.ownerRepository.save(ownerToUpdate);
+
+    return {
+      id: ownerToUpdate.id,
+      status: 'ok',
+    };
+  }
 
   async getOwnerDetails(ownerId: string): Promise<Owner> {
     const ownerToGet = await this.ownerRepository
@@ -61,17 +96,6 @@ export class OwnerService {
     return {
       results: ownersList,
       count: count,
-    };
-  }
-  async registerNewOwner(
-    registerOwnerData: registerOwnerDto,
-  ): Promise<OwnerRegisterResponse> {
-    const newOwner = this.ownerRepository.create({ ...registerOwnerData });
-    await this.ownerRepository.save(newOwner);
-
-    return {
-      id: newOwner.id,
-      status: 'ok',
     };
   }
 
