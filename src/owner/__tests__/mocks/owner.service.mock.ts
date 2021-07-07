@@ -1,5 +1,8 @@
-// eslint-disable-next-line prettier/prettier
-import { getOwnerListResponse, ownerStub, ownerSuccessResponse } from "../stubs/owner.stub";
+import {
+  getOwnerListResponse,
+  ownerStub,
+  ownerSuccessResponse,
+} from '../stubs/owner.stub';
 
 export const OwnerServiceMock = {
   registerNewOwner: jest.fn().mockResolvedValue(ownerSuccessResponse),

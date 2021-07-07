@@ -7,7 +7,7 @@ import {
 import { Pet } from '../../../pet/pet.entity';
 
 export const petStub: Pet = {
-  id: 'testPteId',
+  id: 'testPetId',
   name: 'testPet',
   type: 'dog',
   sex: PetSexes.MALE,
@@ -26,7 +26,7 @@ export const petStub: Pet = {
 
 export const petsListStub: PetListInterface[] = [
   {
-    id: 'testPteId',
+    id: 'testPetId',
     name: 'testPet',
     type: 'dog',
     owner: null,
@@ -34,7 +34,7 @@ export const petsListStub: PetListInterface[] = [
 ];
 
 export const petSuccessResponse: PetRegisterResponse = {
-  id: 'testPteId',
+  id: petStub.id,
   status: 'ok',
 };
 
