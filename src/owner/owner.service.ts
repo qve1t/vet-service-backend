@@ -10,8 +10,8 @@ import {
   OwnerUpdateResponse,
 } from '../interfaces/owner';
 import { Pet } from '../pet/pet.entity';
-import { assignPetToOwnerDto } from './dto/assignPetToOwnerDto';
-import { registerOwnerDto } from './dto/registerOwnerDto';
+import { assignPetToOwnerDto } from './dto/assignPetToOwner.dto';
+import { registerOwnerDto } from './dto/registerOwner.dto';
 import { updateOwnerInfoDto } from './dto/updateOwnerInfo.dto';
 import { Owner } from './owner.entity';
 

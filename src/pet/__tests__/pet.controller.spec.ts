@@ -7,7 +7,7 @@ import {
   PetRegisterResponse,
   PetSexes,
 } from '../../interfaces/pet';
-import { assignOwnerToPetDto } from '../dto/assignOwnerToPet';
+import { assignOwnerToPetDto } from '../dto/assignOwnerToPet.dto';
 import { registerPetDto } from '../dto/registerPet.dto';
 import { updatePetInfoDto } from '../dto/updatePetInfo.dto';
 import { PetController } from '../pet.controller';

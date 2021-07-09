@@ -14,6 +14,16 @@ export class Visit implements VisitInterface {
   dateTime: Date;
 
   @Column({
+    length: 600,
+  })
+  name: string;
+
+  @Column({
+    length: 2000,
+  })
+  note: string;
+
+  @Column({
     type: 'longtext',
     default: '',
   })

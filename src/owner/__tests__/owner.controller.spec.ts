@@ -7,8 +7,8 @@ import {
   OwnerRegisterResponse,
   OwnerUpdateResponse,
 } from '../../interfaces/owner';
-import { assignPetToOwnerDto } from '../dto/assignPetToOwnerDto';
-import { registerOwnerDto } from '../dto/registerOwnerDto';
+import { assignPetToOwnerDto } from '../dto/assignPetToOwner.dto';
+import { registerOwnerDto } from '../dto/registerOwner.dto';
 import { updateOwnerInfoDto } from '../dto/updateOwnerInfo.dto';
 import { OwnerController } from '../owner.controller';
 import { Owner } from '../owner.entity';

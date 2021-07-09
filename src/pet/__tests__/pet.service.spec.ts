@@ -11,7 +11,7 @@ import {
   PetUpdateResponse,
 } from '../../interfaces/pet';
 import { Owner } from '../../owner/owner.entity';
-import { assignOwnerToPetDto } from '../dto/assignOwnerToPet';
+import { assignOwnerToPetDto } from '../dto/assignOwnerToPet.dto';
 import { registerPetDto } from '../dto/registerPet.dto';
 import { updatePetInfoDto } from '../dto/updatePetInfo.dto';
 import { Pet } from '../pet.entity';
