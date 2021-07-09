@@ -21,25 +21,25 @@ export class Visit implements VisitInterface {
   @Column({
     length: 2000,
   })
-  note: string;
+  note: string | null;
 
   @Column({
     type: 'longtext',
     default: '',
   })
-  interview: string;
+  interview: string | null;
 
   @Column({
     type: 'longtext',
     default: '',
   })
-  description: string;
+  description: string | null;
 
   @Column({
     type: 'longtext',
     default: '',
   })
-  healing: string;
+  healing: string | null;
 
   @ManyToOne(() => Pet, (entity) => entity.visits)
   petOnVisit: Pet;

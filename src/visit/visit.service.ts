@@ -98,7 +98,7 @@ export class VisitService {
       where: {
         dateTime: Between(startDate, endDate),
       },
-      select: ['dateTime', 'name'],
+      select: ['id', 'dateTime', 'name'],
     });
 
     return listOfVisits;

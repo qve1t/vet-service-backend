@@ -4,7 +4,7 @@ import {
   PetRegisterResponse,
   PetSexes,
 } from '../../../interfaces/pet';
-import { Pet } from '../../../pet/pet.entity';
+import { Pet } from '../../pet.entity';
 
 export const petStub: Pet = {
   id: 'testPetId',

@@ -22,6 +22,7 @@ export interface VisitGetQuery {
 }
 
 export interface VisitListInterface {
+  id: string;
   dateTime: Date;
   name: string;
 }
