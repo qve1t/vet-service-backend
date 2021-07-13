@@ -88,8 +88,10 @@ describe('UserService', () => {
           email: secondUserStub.email,
           password: secondUserStub.password,
         };
-        jest.spyOn(repository, 'findOne').mockResolvedValue(undefined);
-        jest.spyOn(hashingUtil, 'hashPassword').mockResolvedValue('abcd123');
+        jest.spyOn(repository, 'findOne').mockResolvedValueOnce(undefined);
+        jest
+          .spyOn(hashingUtil, 'hashPassword')
+          .mockResolvedValueOnce('abcd123');
         jest.spyOn(service, 'filterUserObject');
         hashedPassword = 'abcd123';
         savedUser = await service.registerUser(registerUserDto);
@@ -138,8 +140,9 @@ describe('UserService', () => {
           email: userStub.email,
           newPassword: userStub.password,
         };
-        jest.spyOn(hashingUtil, 'hashPassword').mockResolvedValue('abcd123');
-        jest.spyOn(repository, 'findOne').mockResolvedValue(userStub);
+        jest
+          .spyOn(hashingUtil, 'hashPassword')
+          .mockResolvedValueOnce('abcd123');
         jest.spyOn(service, 'filterUserObject');
         hashedNewPassword = 'abcd123';
         savedUser = await service.changePassword(changePasswordDto);

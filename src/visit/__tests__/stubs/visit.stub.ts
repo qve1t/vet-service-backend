@@ -1,4 +1,4 @@
-import { VisitRegisterResponse } from 'src/interfaces/visit';
+import { VisitListReponse, VisitRegisterResponse } from 'src/interfaces/visit';
 import { Visit } from '../../visit.entity';
 import { ownerStub } from './owner.stub';
 import { petStub } from './pet.stub';
@@ -15,7 +15,7 @@ export const visitStub: Visit = {
   petOnVisit: petStub,
 };
 
-export const visitListResponse = [
+export const visitListResponse: VisitListReponse = [
   { id: visitStub.id, name: visitStub.name, dateTime: visitStub.dateTime },
 ];
 
