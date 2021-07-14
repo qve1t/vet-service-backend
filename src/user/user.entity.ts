@@ -17,4 +17,10 @@ export class User implements UserInterface {
     nullable: false,
   })
   password: string;
+
+  @Column({
+    nullable: true,
+    default: null,
+  })
+  currentToken: string | null;
 }
