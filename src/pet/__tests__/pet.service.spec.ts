@@ -52,6 +52,7 @@ describe('PetService', () => {
   describe('registerNewPet', () => {
     describe('when registerNewPet is called', () => {
       let createdPet: Pet;
+      let userId: string;
       let registerPetData: registerPetDto;
       let response: PetRegisterResponse;
 
@@ -70,13 +71,16 @@ describe('PetService', () => {
           diseases: null,
           others: null,
         };
-
+        userId = 'testUserId';
         createdPet = petStub;
-        response = await service.registerNewPet(registerPetData);
+        response = await service.registerNewPet(registerPetData, userId);
       });
 
       it('should create new pet basing on data', () => {
-        expect(petRepository.create).toBeCalledWith(registerPetData);
+        expect(petRepository.create).toBeCalledWith({
+          ...registerPetData,
+          userId: userId,
+        });
       });
 
       it('should save created pet', () => {
@@ -94,6 +98,7 @@ describe('PetService', () => {
       let foundPet: Pet;
       let updatePetInfoData: updatePetInfoDto;
       let response: PetUpdateResponse;
+      let userId: string;
 
       beforeEach(async () => {
         updatePetInfoData = {
@@ -108,13 +113,16 @@ describe('PetService', () => {
           diseases: null,
           others: null,
         };
-
+        userId = 'testUserId';
         foundPet = petStub;
-        response = await service.updatePetInfo(updatePetInfoData);
+        response = await service.updatePetInfo(updatePetInfoData, userId);
       });
 
       it('should check if pet to update exists', () => {
-        expect(petRepository.findOne).toBeCalledWith(updatePetInfoData.id);
+        expect(petRepository.findOne).toBeCalledWith({
+          id: updatePetInfoData.id,
+          userId: userId,
+        });
       });
 
       it('should save updated pet', () => {
@@ -134,10 +142,12 @@ describe('PetService', () => {
     describe('when getPetsList is called', () => {
       let query: PetQueryInterface;
       let resultsResponse: PetListResponse;
+      let userId: string;
 
       beforeEach(async () => {
         query = { page: 0, limit: 10, name: '' };
-        resultsResponse = await service.getPetsList(query);
+        userId = 'testUserId';
+        resultsResponse = await service.getPetsList(query, userId);
       });
 
       it('should call the query builder', () => {
@@ -154,14 +164,19 @@ describe('PetService', () => {
     describe('when deletePet is called', () => {
       let petId: string;
       let deleteResponse: PetDeleteResponse;
+      let userId: string;
 
       beforeEach(async () => {
         petId = petStub.id;
-        deleteResponse = await service.deletePet(petId);
+        userId = 'testUserId';
+        deleteResponse = await service.deletePet(petId, userId);
       });
 
       it('should check if pet exist', () => {
-        expect(petRepository.findOne).toBeCalledWith(petId);
+        expect(petRepository.findOne).toBeCalledWith({
+          id: petId,
+          userId: userId,
+        });
       });
 
       it('should delete existing pet', () => {
@@ -179,23 +194,30 @@ describe('PetService', () => {
       let assignOwnerToPetData: assignOwnerToPetDto;
       let assignResponse: AssignOwnerToPetResponse;
       let petToSave: Pet;
+      let userId: string;
 
       beforeEach(async () => {
         assignOwnerToPetData = { petId: petStub.id, ownerId: 'testOwnerId' };
-        assignResponse = await service.assignOwnerToPet(assignOwnerToPetData);
         petToSave = petStub;
+        userId = 'testUserId';
+        assignResponse = await service.assignOwnerToPet(
+          assignOwnerToPetData,
+          userId,
+        );
       });
 
       it('should check if pet exist', () => {
-        expect(petRepository.findOne).toBeCalledWith(
-          assignOwnerToPetData.petId,
-        );
+        expect(petRepository.findOne).toBeCalledWith({
+          id: assignOwnerToPetData.petId,
+          userId: userId,
+        });
       });
 
       it('should check if owner exist', () => {
-        expect(ownerRepository.findOne).toBeCalledWith(
-          assignOwnerToPetData.ownerId,
-        );
+        expect(ownerRepository.findOne).toBeCalledWith({
+          id: assignOwnerToPetData.ownerId,
+          userId: userId,
+        });
       });
 
       it('should save new pets owner', () => {

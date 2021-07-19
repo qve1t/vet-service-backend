@@ -165,6 +165,7 @@ describe('UserService', () => {
           id: userStub.id,
           email: changePasswordDto.email,
           password: hashedNewPassword,
+          currentToken: userStub.currentToken,
         });
       });
 

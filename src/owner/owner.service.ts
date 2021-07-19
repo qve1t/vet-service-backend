@@ -24,8 +24,12 @@ export class OwnerService {
 
   async registerNewOwner(
     registerOwnerData: registerOwnerDto,
+    userId: string,
   ): Promise<OwnerRegisterResponse> {
-    const newOwner = this.ownerRepository.create({ ...registerOwnerData });
+    const newOwner = this.ownerRepository.create({
+      ...registerOwnerData,
+      userId: userId,
+    });
     await this.ownerRepository.save(newOwner);
 
     return {
@@ -36,10 +40,12 @@ export class OwnerService {
 
   async updateOwnerInfo(
     updateOwnerInfoData: updateOwnerInfoDto,
+    userId: string,
   ): Promise<OwnerUpdateResponse> {
-    let ownerToUpdate = await this.ownerRepository.findOne(
-      updateOwnerInfoData.id,
-    );
+    let ownerToUpdate = await this.ownerRepository.findOne({
+      id: updateOwnerInfoData.id,
+      userId,
+    });
 
     if (!ownerToUpdate) {
       throw new HttpException('Owner not found', HttpStatus.NOT_FOUND);
@@ -55,11 +61,11 @@ export class OwnerService {
     };
   }
 
-  async getOwnerDetails(ownerId: string): Promise<Owner> {
+  async getOwnerDetails(ownerId: string, userId: string): Promise<Owner> {
     const ownerToGet = await this.ownerRepository
       .createQueryBuilder('owner')
       .leftJoinAndSelect('owner.pets', 'pets')
-      .where({ id: ownerId })
+      .where({ id: ownerId, userId: userId })
       .select([
         'owner.name',
         'owner.surname',
@@ -78,15 +84,18 @@ export class OwnerService {
     return ownerToGet;
   }
 
-  async getOwnersList(query: OwnerQueryInterface): Promise<OwnerListResponse> {
+  async getOwnersList(
+    query: OwnerQueryInterface,
+    userId: string,
+  ): Promise<OwnerListResponse> {
     const page = query.page || 0;
     const limit = query.limit || 10;
     const nameSurname = query.nameSurname || '';
 
     const [ownersList, count] = await this.ownerRepository.findAndCount({
       where: [
-        { name: Like(`%${nameSurname}%`) },
-        { surname: Like(`%${nameSurname}%`) },
+        { name: Like(`%${nameSurname}%`), userId: userId },
+        { surname: Like(`%${nameSurname}%`), userId: userId },
       ],
       select: ['id', 'name', 'surname'],
       skip: page * limit,
@@ -99,8 +108,14 @@ export class OwnerService {
     };
   }
 
-  async deleteOwner(ownerId: string): Promise<OwnerDeleteResponse> {
-    const ownerToDelete = await this.ownerRepository.findOne(ownerId);
+  async deleteOwner(
+    ownerId: string,
+    userId: string,
+  ): Promise<OwnerDeleteResponse> {
+    const ownerToDelete = await this.ownerRepository.findOne({
+      id: ownerId,
+      userId: userId,
+    });
     if (!ownerToDelete) {
       throw new HttpException('Owner not found', HttpStatus.NOT_FOUND);
     }
@@ -115,15 +130,19 @@ export class OwnerService {
 
   async assignPetToOwner(
     assignPetToOwnerData: assignPetToOwnerDto,
+    userId: string,
   ): Promise<AssignPetToOwnerResponse> {
     const { ownerId, petId } = assignPetToOwnerData;
 
-    const owner = await this.ownerRepository.findOne(ownerId);
+    const owner = await this.ownerRepository.findOne({
+      id: ownerId,
+      userId: userId,
+    });
     if (!owner) {
       throw new HttpException('Owner not found', HttpStatus.NOT_FOUND);
     }
 
-    const pet = await this.petRepository.findOne(petId);
+    const pet = await this.petRepository.findOne({ id: petId, userId: userId });
     if (!pet) {
       throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
     }

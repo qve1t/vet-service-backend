@@ -1,4 +1,7 @@
-import { VisitListReponse, VisitRegisterResponse } from 'src/interfaces/visit';
+import {
+  VisitListReponse,
+  VisitRegisterResponse,
+} from '../../../interfaces/visit';
 import { Visit } from '../../visit.entity';
 import { ownerStub } from './owner.stub';
 import { petStub } from './pet.stub';
@@ -13,6 +16,7 @@ export const visitStub: Visit = {
   interview: null,
   ownerOnVisit: ownerStub,
   petOnVisit: petStub,
+  userId: 'test',
 };
 
 export const visitListResponse: VisitListReponse = [

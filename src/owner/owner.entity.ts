@@ -47,4 +47,7 @@ export class Owner implements OwnerInterface {
 
   @OneToMany(() => Visit, (entity) => entity.ownerOnVisit)
   visits: Visit[];
+
+  @Column()
+  userId: string;
 }

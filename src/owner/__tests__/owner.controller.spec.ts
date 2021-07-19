@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { User } from '../../user/user.entity';
 import {
   AssignPetToOwnerResponse,
   OwnerDeleteResponse,
@@ -19,6 +20,7 @@ import {
   ownerStub,
   ownerSuccessResponse,
 } from './stubs/owner.stub';
+import { userStub } from './stubs/user.stub';
 
 describe('OwnerController', () => {
   let controller: OwnerController;
@@ -44,14 +46,16 @@ describe('OwnerController', () => {
   describe('getOwnersList', () => {
     let owners: OwnerListResponse;
     let query: OwnerQueryInterface;
+    let user: User;
 
     beforeEach(async () => {
       query = { limit: 10, page: 0, nameSurname: '' };
-      owners = await service.getOwnersList(query);
+      user = userStub;
+      owners = await controller.getOwnersList(query, user);
     });
 
     it('should call PetService', () => {
-      expect(service.getOwnersList).toBeCalledWith(query);
+      expect(service.getOwnersList).toBeCalledWith(query, user.id);
     });
 
     it('should return simplified array of owners and count them', () => {
@@ -62,14 +66,16 @@ describe('OwnerController', () => {
   describe('getOwnerDetails', () => {
     let owner: Owner;
     let ownerId: string;
+    let user: User;
 
     beforeEach(async () => {
       ownerId = ownerStub.id;
-      owner = await service.getOwnerDetails(ownerId);
+      user = userStub;
+      owner = await controller.getOwnerDetails(ownerId, user);
     });
 
     it('should call PetService', () => {
-      expect(service.getOwnerDetails).toBeCalledWith(ownerId);
+      expect(service.getOwnerDetails).toBeCalledWith(ownerId, user.id);
     });
 
     it('should return detailed info about owner', () => {
@@ -80,6 +86,7 @@ describe('OwnerController', () => {
   describe('registerNewOwner', () => {
     let registerResponse: OwnerRegisterResponse;
     let registerOwnerData: registerOwnerDto;
+    let user: User;
 
     beforeEach(async () => {
       registerOwnerData = {
@@ -89,11 +96,18 @@ describe('OwnerController', () => {
         email: null,
         phone: null,
       };
-      registerResponse = await service.registerNewOwner(registerOwnerData);
+      user = userStub;
+      registerResponse = await controller.registerNewOwner(
+        registerOwnerData,
+        user,
+      );
     });
 
     it('should call PetService', () => {
-      expect(service.registerNewOwner).toBeCalledWith(registerOwnerData);
+      expect(service.registerNewOwner).toBeCalledWith(
+        registerOwnerData,
+        user.id,
+      );
     });
 
     it('should return success register response', () => {
@@ -104,6 +118,7 @@ describe('OwnerController', () => {
   describe('updateOwnerInfo', () => {
     let updateResponse: OwnerUpdateResponse;
     let updateOwnerInfoData: updateOwnerInfoDto;
+    let user: User;
 
     beforeEach(async () => {
       updateOwnerInfoData = {
@@ -112,11 +127,18 @@ describe('OwnerController', () => {
         email: 'testemail@test.com',
         phone: null,
       };
-      updateResponse = await service.updateOwnerInfo(updateOwnerInfoData);
+      user = userStub;
+      updateResponse = await controller.updateOwnerInfo(
+        updateOwnerInfoData,
+        user,
+      );
     });
 
     it('should call PetService', () => {
-      expect(service.updateOwnerInfo).toBeCalledWith(updateOwnerInfoData);
+      expect(service.updateOwnerInfo).toBeCalledWith(
+        updateOwnerInfoData,
+        user.id,
+      );
     });
 
     it('should return success update response', () => {
@@ -127,14 +149,16 @@ describe('OwnerController', () => {
   describe('deleteOwner', () => {
     let deleteResponse: OwnerDeleteResponse;
     let ownerId: string;
+    let user: User;
 
     beforeEach(async () => {
       ownerId = ownerStub.id;
-      deleteResponse = await service.deleteOwner(ownerId);
+      user = userStub;
+      deleteResponse = await controller.deleteOwner(ownerId, user);
     });
 
     it('should call PetService', () => {
-      expect(service.deleteOwner).toBeCalledWith(ownerId);
+      expect(service.deleteOwner).toBeCalledWith(ownerId, user.id);
     });
 
     it('should return success delete response', () => {
@@ -145,14 +169,22 @@ describe('OwnerController', () => {
   describe('assingPetToOwner', () => {
     let assignPetResponse: AssignPetToOwnerResponse;
     let assignPetToOwnerData: assignPetToOwnerDto;
+    let user: User;
 
     beforeEach(async () => {
       assignPetToOwnerData = { ownerId: ownerStub.id, petId: 'testPetId' };
-      assignPetResponse = await service.assignPetToOwner(assignPetToOwnerData);
+      user = userStub;
+      assignPetResponse = await controller.assingPetToOwner(
+        assignPetToOwnerData,
+        user,
+      );
     });
 
     it('should call PetService', () => {
-      expect(service.assignPetToOwner).toBeCalledWith(assignPetToOwnerData);
+      expect(service.assignPetToOwner).toBeCalledWith(
+        assignPetToOwnerData,
+        user.id,
+      );
     });
 
     it('should return success assign response', () => {

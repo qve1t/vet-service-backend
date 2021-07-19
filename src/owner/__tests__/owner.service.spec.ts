@@ -23,6 +23,8 @@ import {
   ownerStub,
   ownerSuccessResponse,
 } from './stubs/owner.stub';
+import { User } from '../../user/user.entity';
+import { userStub } from './stubs/user.stub';
 
 describe('OwnerService', () => {
   let service: OwnerService;
@@ -52,6 +54,7 @@ describe('OwnerService', () => {
       let createdOwner: Owner;
       let registerOwnerData: registerOwnerDto;
       let response: OwnerRegisterResponse;
+      let user: User;
 
       beforeEach(async () => {
         registerOwnerData = {
@@ -63,11 +66,15 @@ describe('OwnerService', () => {
         };
 
         createdOwner = ownerStub;
-        response = await service.registerNewOwner(registerOwnerData);
+        user = userStub;
+        response = await service.registerNewOwner(registerOwnerData, user.id);
       });
 
       it('should create new owner basing on data', () => {
-        expect(ownerRepository.create).toBeCalledWith(registerOwnerData);
+        expect(ownerRepository.create).toBeCalledWith({
+          ...registerOwnerData,
+          userId: user.id,
+        });
       });
 
       it('should save created owner', () => {
@@ -85,6 +92,7 @@ describe('OwnerService', () => {
       let foundOwner: Owner;
       let updateOwnerInfoData: updateOwnerInfoDto;
       let response: OwnerUpdateResponse;
+      let user: User;
 
       beforeEach(async () => {
         updateOwnerInfoData = {
@@ -95,11 +103,15 @@ describe('OwnerService', () => {
         };
 
         foundOwner = ownerStub;
-        response = await service.updateOwnerInfo(updateOwnerInfoData);
+        user = userStub;
+        response = await service.updateOwnerInfo(updateOwnerInfoData, user.id);
       });
 
       it('should check if owner to update exists', () => {
-        expect(ownerRepository.findOne).toBeCalledWith(updateOwnerInfoData.id);
+        expect(ownerRepository.findOne).toBeCalledWith({
+          id: updateOwnerInfoData.id,
+          userId: user.id,
+        });
       });
 
       it('should save updated owner', () => {
@@ -119,10 +131,12 @@ describe('OwnerService', () => {
     describe('when getOwnersList is called', () => {
       let query: OwnerQueryInterface;
       let resultsResponse: OwnerListResponse;
+      let user: User;
 
       beforeEach(async () => {
         query = { page: 0, limit: 10, nameSurname: '' };
-        resultsResponse = await service.getOwnersList(query);
+        user = userStub;
+        resultsResponse = await service.getOwnersList(query, user.id);
       });
 
       it('should call find owne in db', () => {
@@ -139,14 +153,19 @@ describe('OwnerService', () => {
     describe('when deletePet is called', () => {
       let ownerId: string;
       let deleteResponse: OwnerDeleteResponse;
+      let user: User;
 
       beforeEach(async () => {
         ownerId = ownerStub.id;
-        deleteResponse = await service.deleteOwner(ownerId);
+        user = userStub;
+        deleteResponse = await service.deleteOwner(ownerId, user.id);
       });
 
       it('should check if owner exist', () => {
-        expect(ownerRepository.findOne).toBeCalledWith(ownerId);
+        expect(ownerRepository.findOne).toBeCalledWith({
+          id: ownerId,
+          userId: user.id,
+        });
       });
 
       it('should delete existing pet', () => {
@@ -164,10 +183,15 @@ describe('OwnerService', () => {
       let assignPetToOwnerData: assignPetToOwnerDto;
       let assignResponse: AssignPetToOwnerResponse;
       let petToSave: Pet;
+      let user: User;
 
       beforeEach(async () => {
         assignPetToOwnerData = { petId: 'testPetId', ownerId: ownerStub.id };
-        assignResponse = await service.assignPetToOwner(assignPetToOwnerData);
+        user = userStub;
+        assignResponse = await service.assignPetToOwner(
+          assignPetToOwnerData,
+          user.id,
+        );
         petToSave = {
           id: 'testPetId',
           name: 'testPet',
@@ -184,19 +208,22 @@ describe('OwnerService', () => {
           others: null,
           visits: null,
           owner: ownerStub,
+          userId: 'test',
         };
       });
 
       it('should check if pet exist', () => {
-        expect(petRepository.findOne).toBeCalledWith(
-          assignPetToOwnerData.petId,
-        );
+        expect(petRepository.findOne).toBeCalledWith({
+          id: assignPetToOwnerData.petId,
+          userId: user.id,
+        });
       });
 
       it('should check if owner exist', () => {
-        expect(ownerRepository.findOne).toBeCalledWith(
-          assignPetToOwnerData.ownerId,
-        );
+        expect(ownerRepository.findOne).toBeCalledWith({
+          id: assignPetToOwnerData.ownerId,
+          userId: user.id,
+        });
       });
 
       it('should save new pets owner', () => {

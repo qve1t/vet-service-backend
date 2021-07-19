@@ -4,10 +4,10 @@ import { sign } from 'jsonwebtoken';
 import { v4 as uuid } from 'uuid';
 import { Repository } from 'typeorm';
 import { Response } from 'express';
+import * as bcrypt from 'bcrypt';
 import { User } from '../user/user.entity';
 import { JwtPayload } from './jwt.strategy';
 import { LoginDto } from './dto/login.dto';
-import { hashPassword } from 'src/utils/passwordHash';
 
 @Injectable()
 export class AuthService {
@@ -45,10 +45,18 @@ export class AuthService {
     try {
       const user = await this.userRepository.findOne({
         email: loginData.email,
-        password: await hashPassword(loginData.password),
       });
 
       if (!user) {
+        return res.json({ error: 'Invalid login data' });
+      }
+
+      const matchPassword = await bcrypt.compare(
+        loginData.password,
+        user.password,
+      );
+
+      if (!matchPassword) {
         return res.json({ error: 'Invalid login data' });
       }
 

@@ -46,4 +46,7 @@ export class Visit implements VisitInterface {
 
   @ManyToOne(() => Owner, (entity) => entity.visits)
   ownerOnVisit: Owner;
+
+  @Column()
+  userId: string;
 }

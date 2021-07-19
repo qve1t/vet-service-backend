@@ -24,8 +24,12 @@ export class PetService {
 
   async registerNewPet(
     registerPetData: registerPetDto,
+    userId: string,
   ): Promise<PetRegisterResponse> {
-    const newPet = this.petRepository.create({ ...registerPetData });
+    const newPet = this.petRepository.create({
+      ...registerPetData,
+      userId: userId,
+    });
     await this.petRepository.save(newPet);
 
     return {
@@ -36,8 +40,12 @@ export class PetService {
 
   async updatePetInfo(
     updatePetInfoData: updatePetInfoDto,
+    userId: string,
   ): Promise<PetUpdateResponse> {
-    let petToUpdate = await this.petRepository.findOne(updatePetInfoData.id);
+    let petToUpdate = await this.petRepository.findOne({
+      id: updatePetInfoData.id,
+      userId: userId,
+    });
 
     if (!petToUpdate) {
       throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
@@ -53,10 +61,13 @@ export class PetService {
     };
   }
 
-  async getPetDetails(petId: string): Promise<Pet> {
-    const petToGet = await this.petRepository.findOne(petId, {
-      relations: ['owner'],
-    });
+  async getPetDetails(petId: string, userId: string): Promise<Pet> {
+    const petToGet = await this.petRepository.findOne(
+      { id: petId, userId: userId },
+      {
+        relations: ['owner'],
+      },
+    );
     if (!petToGet) {
       throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
     }
@@ -64,7 +75,10 @@ export class PetService {
     return petToGet;
   }
 
-  async getPetsList(query: PetQueryInterface): Promise<PetListResponse> {
+  async getPetsList(
+    query: PetQueryInterface,
+    userId: string,
+  ): Promise<PetListResponse> {
     const page = query.page || 0;
     const limit = query.limit || 10;
     const name = query.name || '';
@@ -82,7 +96,7 @@ export class PetService {
       ])
       .skip(page * limit)
       .take(limit)
-      .where({ name: Like(`%${name}%`) })
+      .where({ name: Like(`%${name}%`), userId: userId })
       .getManyAndCount();
 
     return {
@@ -91,8 +105,11 @@ export class PetService {
     };
   }
 
-  async deletePet(petId: string): Promise<PetDeleteResponse> {
-    const petToDelete = await this.petRepository.findOne(petId);
+  async deletePet(petId: string, userId: string): Promise<PetDeleteResponse> {
+    const petToDelete = await this.petRepository.findOne({
+      id: petId,
+      userId: userId,
+    });
     if (!petToDelete) {
       throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
     }
@@ -107,15 +124,19 @@ export class PetService {
 
   async assignOwnerToPet(
     assignOwnerToPetData: assignOwnerToPetDto,
+    userId: string,
   ): Promise<AssignOwnerToPetResponse> {
     const { petId, ownerId } = assignOwnerToPetData;
 
-    const pet = await this.petRepository.findOne(petId);
+    const pet = await this.petRepository.findOne({ id: petId, userId: userId });
     if (!pet) {
       throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
     }
 
-    const owner = await this.ownerRepository.findOne(ownerId);
+    const owner = await this.ownerRepository.findOne({
+      id: ownerId,
+      userId: userId,
+    });
     if (!owner) {
       throw new HttpException('Owner not found', HttpStatus.NOT_FOUND);
     }

@@ -24,9 +24,11 @@ export class VisitService {
 
   async registerVisit(
     registerVisitData: RegisterVisitDto,
+    userId: string,
   ): Promise<VisitRegisterResponse> {
     const sameHourVisit = await this.visitRepository.findOne({
       dateTime: registerVisitData.dateTime,
+      userId: userId,
     });
     if (sameHourVisit) {
       throw new HttpException(
@@ -35,14 +37,18 @@ export class VisitService {
       );
     }
 
-    const visitPet = await this.petRepository.findOne(registerVisitData.petId);
+    const visitPet = await this.petRepository.findOne({
+      id: registerVisitData.petId,
+      userId: userId,
+    });
     if (!visitPet) {
       throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
     }
 
-    const visitOwner = await this.ownerRepository.findOne(
-      registerVisitData.ownerId,
-    );
+    const visitOwner = await this.ownerRepository.findOne({
+      id: registerVisitData.ownerId,
+      userId: userId,
+    });
     if (!visitOwner) {
       throw new HttpException('Owner not found', HttpStatus.NOT_FOUND);
     }
@@ -51,6 +57,7 @@ export class VisitService {
       ...registerVisitData,
       petOnVisit: visitPet,
       ownerOnVisit: visitOwner,
+      userId: userId,
     });
 
     await this.visitRepository.save(newVisit);
@@ -63,8 +70,12 @@ export class VisitService {
 
   async updateVisit(
     updateVisitData: UpdateVisitDto,
+    userId: string,
   ): Promise<VisitUpdateResponse> {
-    let visitToUpdate = await this.visitRepository.findOne(updateVisitData.id);
+    let visitToUpdate = await this.visitRepository.findOne({
+      id: updateVisitData.id,
+      userId: userId,
+    });
 
     if (!visitToUpdate) {
       throw new HttpException('Visit not found', HttpStatus.NOT_FOUND);
@@ -80,10 +91,13 @@ export class VisitService {
     };
   }
 
-  async getVisitDetails(visitId: string): Promise<Visit> {
-    const visitToGet = await this.visitRepository.findOne(visitId, {
-      relations: ['petOnVisit', 'ownerOnVisit'],
-    });
+  async getVisitDetails(visitId: string, userId: string): Promise<Visit> {
+    const visitToGet = await this.visitRepository.findOne(
+      { id: visitId, userId: userId },
+      {
+        relations: ['petOnVisit', 'ownerOnVisit'],
+      },
+    );
 
     if (!visitToGet) {
       throw new HttpException('Visit not found', HttpStatus.NOT_FOUND);
@@ -92,11 +106,15 @@ export class VisitService {
     return visitToGet;
   }
 
-  async getVisitsForDay(query: VisitGetQuery): Promise<VisitListReponse> {
+  async getVisitsForDay(
+    query: VisitGetQuery,
+    userId: string,
+  ): Promise<VisitListReponse> {
     const { startDate, endDate } = query;
     const listOfVisits = await this.visitRepository.find({
       where: {
         dateTime: Between(startDate, endDate),
+        userId: userId,
       },
       select: ['id', 'dateTime', 'name'],
     });
@@ -104,8 +122,14 @@ export class VisitService {
     return listOfVisits;
   }
 
-  async deleteVisit(visitId: string): Promise<VisitDeleteResponse> {
-    const visitToDelete = this.visitRepository.findOne(visitId);
+  async deleteVisit(
+    visitId: string,
+    userId: string,
+  ): Promise<VisitDeleteResponse> {
+    const visitToDelete = this.visitRepository.findOne({
+      id: visitId,
+      userId: userId,
+    });
 
     if (!visitToDelete) {
       throw new HttpException('Visit not found', HttpStatus.NOT_FOUND);

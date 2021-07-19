@@ -97,4 +97,7 @@ export class Pet implements PetInterface {
 
   @OneToMany(() => Visit, (entity) => entity.petOnVisit)
   visits: Visit[];
+
+  @Column()
+  userId: string;
 }

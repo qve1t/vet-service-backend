@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { User } from '../../user/user.entity';
 import {
   VisitDeleteResponse,
   VisitGetQuery,
@@ -14,6 +15,7 @@ import { VisitService } from '../visit.service';
 import { VisitServiceMock } from './mocks/visit.service.mock';
 import { ownerStub } from './stubs/owner.stub';
 import { petStub } from './stubs/pet.stub';
+import { userStub } from './stubs/user.stub';
 import {
   visitListResponse,
   visitStub,
@@ -44,14 +46,16 @@ describe('VisitController', () => {
   describe('getVisitsList', () => {
     let query: VisitGetQuery;
     let visitsResponse: VisitListReponse;
+    let user: User;
 
     beforeEach(async () => {
       query = { endDate: new Date(), startDate: new Date() };
-      visitsResponse = await service.getVisitsForDay(query);
+      user = userStub;
+      visitsResponse = await controller.getVisitsList(query, user);
     });
 
     it('should call VisitService', () => {
-      expect(service.getVisitsForDay).toBeCalledWith(query);
+      expect(service.getVisitsForDay).toBeCalledWith(query, user.id);
     });
 
     it('should return list of visits', () => {
@@ -62,14 +66,16 @@ describe('VisitController', () => {
   describe('getVisitDetails', () => {
     let visitId: string;
     let visitDetails: Visit;
+    let user: User;
 
     beforeEach(async () => {
       visitId = visitStub.id;
-      visitDetails = await service.getVisitDetails(visitId);
+      user = userStub;
+      visitDetails = await controller.getVisitDetails(visitId, user);
     });
 
     it('should call VisitService', () => {
-      expect(service.getVisitDetails).toBeCalledWith(visitId);
+      expect(service.getVisitDetails).toBeCalledWith(visitId, user.id);
     });
 
     it('should return visit details', () => {
@@ -80,6 +86,7 @@ describe('VisitController', () => {
   describe('registerNewVisit', () => {
     let registerVisitData: RegisterVisitDto;
     let registerResponse: VisitRegisterResponse;
+    let user: User;
 
     beforeEach(async () => {
       registerVisitData = {
@@ -92,11 +99,15 @@ describe('VisitController', () => {
         ownerId: ownerStub.id,
         petId: petStub.id,
       };
-      registerResponse = await service.registerVisit(registerVisitData);
+      user = userStub;
+      registerResponse = await controller.registerNewVisit(
+        registerVisitData,
+        user,
+      );
     });
 
     it('should call VisitService', () => {
-      expect(service.registerVisit).toBeCalledWith(registerVisitData);
+      expect(service.registerVisit).toBeCalledWith(registerVisitData, user.id);
     });
 
     it('should return success register response', () => {
@@ -107,6 +118,7 @@ describe('VisitController', () => {
   describe('updateVisit', () => {
     let updateVisitData: UpdateVisitDto;
     let updateResponse: VisitUpdateResponse;
+    let user: User;
 
     beforeEach(async () => {
       updateVisitData = {
@@ -118,11 +130,12 @@ describe('VisitController', () => {
         healing: null,
         interview: null,
       };
-      updateResponse = await service.updateVisit(updateVisitData);
+      user = userStub;
+      updateResponse = await controller.updateVisit(updateVisitData, user);
     });
 
     it('should call VisitService', () => {
-      expect(service.updateVisit).toBeCalledWith(updateVisitData);
+      expect(service.updateVisit).toBeCalledWith(updateVisitData, user.id);
     });
 
     it('should return success update response', () => {
@@ -133,14 +146,16 @@ describe('VisitController', () => {
   describe('deleteVisit', () => {
     let visitId: string;
     let deleteResponse: VisitDeleteResponse;
+    let user: User;
 
     beforeEach(async () => {
       visitId = visitStub.id;
-      deleteResponse = await service.deleteVisit(visitId);
+      user = userStub;
+      deleteResponse = await controller.deleteVisit(visitId, user);
     });
 
     it('should call VisitService', () => {
-      expect(service.deleteVisit).toBeCalledWith(visitId);
+      expect(service.deleteVisit).toBeCalledWith(visitId, user.id);
     });
 
     it('should return success delete response', () => {

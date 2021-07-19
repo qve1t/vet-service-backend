@@ -10,10 +10,12 @@ export const userStub: User = {
   id: 'asd123',
   email: 'testemail123@test.com',
   password: 'testpassword',
+  currentToken: 'asd',
 };
 
 export const secondUserStub: User = {
   id: '1234qwer',
   email: 'testemail1234qwer@test.com',
   password: 'testpassword',
+  currentToken: '1234',
 };

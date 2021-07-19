@@ -6,7 +6,8 @@ import {
   VisitListReponse,
   VisitRegisterResponse,
   VisitUpdateResponse,
-} from 'src/interfaces/visit';
+} from '../../interfaces/visit';
+import { User } from '../../user/user.entity';
 import { Between, Repository } from 'typeorm';
 import { Owner } from '../../owner/owner.entity';
 import { Pet } from '../../pet/pet.entity';
@@ -24,6 +25,7 @@ import {
   visitStub,
   visitSuccessResponse,
 } from './stubs/visit.stub';
+import { userStub } from './stubs/user.stub';
 
 describe('VisitService', () => {
   let service: VisitService;
@@ -56,6 +58,7 @@ describe('VisitService', () => {
       let registerVisitData: RegisterVisitDto;
       let createdVisit: Visit;
       let visitResponse: VisitRegisterResponse;
+      let user: User;
 
       beforeEach(async () => {
         registerVisitData = {
@@ -69,23 +72,31 @@ describe('VisitService', () => {
           petId: petStub.id,
         };
         createdVisit = visitStub;
+        user = userStub;
 
         jest.spyOn(visitRepository, 'findOne').mockResolvedValueOnce(undefined);
 
-        visitResponse = await service.registerVisit(registerVisitData);
+        visitResponse = await service.registerVisit(registerVisitData, user.id);
       });
       it('should check if there is no visit with the same date', () => {
         expect(visitRepository.findOne).toBeCalledWith({
           dateTime: registerVisitData.dateTime,
+          userId: user.id,
         });
       });
 
       it('should find pet to register on visit', () => {
-        expect(petRepository.findOne).toBeCalledWith(petStub.id);
+        expect(petRepository.findOne).toBeCalledWith({
+          id: petStub.id,
+          userId: user.id,
+        });
       });
 
       it('should find owner to register on visit', () => {
-        expect(ownerRepository.findOne).toBeCalledWith(ownerStub.id);
+        expect(ownerRepository.findOne).toBeCalledWith({
+          id: ownerStub.id,
+          userId: user.id,
+        });
       });
 
       it('should create new visit from input data', () => {
@@ -93,6 +104,7 @@ describe('VisitService', () => {
           ...registerVisitData,
           petOnVisit: petStub,
           ownerOnVisit: ownerStub,
+          userId: user.id,
         });
       });
 
@@ -111,6 +123,7 @@ describe('VisitService', () => {
       let updateVisitData: UpdateVisitDto;
       let foundVisit: Visit;
       let updateResponse: VisitUpdateResponse;
+      let user: User;
 
       beforeEach(async () => {
         updateVisitData = {
@@ -124,11 +137,15 @@ describe('VisitService', () => {
         };
 
         foundVisit = visitStub;
-        updateResponse = await service.updateVisit(updateVisitData);
+        user = userStub;
+        updateResponse = await service.updateVisit(updateVisitData, user.id);
       });
 
       it('should check if visit to update exists', () => {
-        expect(visitRepository.findOne).toBeCalledWith(updateVisitData.id);
+        expect(visitRepository.findOne).toBeCalledWith({
+          id: updateVisitData.id,
+          userId: user.id,
+        });
       });
 
       it('should save visit with updated data', () => {
@@ -148,14 +165,19 @@ describe('VisitService', () => {
     describe('when getVisitDetailsis called', () => {
       let visitId: string;
       let foundVisit: Visit;
+      let user: User;
 
       beforeEach(async () => {
         visitId = visitStub.id;
-        foundVisit = await service.getVisitDetails(visitId);
+        user = userStub;
+        foundVisit = await service.getVisitDetails(visitId, user.id);
       });
 
       it('should look for a viist', () => {
-        expect(visitRepository.findOne).toBeCalledWith(visitId);
+        expect(visitRepository.findOne).toBeCalledWith({
+          id: visitId,
+          userId: user.id,
+        });
       });
 
       it('should return visit with its relations', () => {
@@ -168,19 +190,22 @@ describe('VisitService', () => {
     describe('when getVisitsForDay called', () => {
       let query: VisitGetQuery;
       let listOfVisits: VisitListReponse;
+      let user: User;
 
       beforeEach(async () => {
         query = {
           startDate: new Date(),
           endDate: new Date(),
         };
-        listOfVisits = await service.getVisitsForDay(query);
+        user = userStub;
+        listOfVisits = await service.getVisitsForDay(query, user.id);
       });
 
       it('should look for a viist between certain dates', () => {
         expect(visitRepository.find).toBeCalledWith({
           where: {
             dateTime: Between(query.startDate, query.endDate),
+            userId: user.id,
           },
           select: ['id', 'dateTime', 'name'],
         });
@@ -196,14 +221,19 @@ describe('VisitService', () => {
     describe('when deleteVisit called', () => {
       let visitId: string;
       let deleteResponse: VisitDeleteResponse;
+      let user: User;
 
       beforeEach(async () => {
         visitId = visitStub.id;
-        deleteResponse = await service.deleteVisit(visitId);
+        user = userStub;
+        deleteResponse = await service.deleteVisit(visitId, user.id);
       });
 
       it('should check if visit exists', () => {
-        expect(visitRepository.findOne).toBeCalledWith(visitId);
+        expect(visitRepository.findOne).toBeCalledWith({
+          id: visitId,
+          userId: user.id,
+        });
       });
 
       it('should delete existing visit', () => {

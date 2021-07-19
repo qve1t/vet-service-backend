@@ -22,6 +22,7 @@ export const petStub: Pet = {
   others: null,
   owner: null,
   visits: null,
+  userId: 'testUserId',
 };
 
 export const petsListStub: PetListInterface[] = [
