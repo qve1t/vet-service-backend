@@ -28,8 +28,10 @@ export class AuthController {
 
   @Get('/logout')
   @UseGuards(AuthGuard('jwt'))
-  async logoutUser(@UserObject() user: User, @Res() res: Response) {
-    console.log(user);
+  async logoutUser(
+    @UserObject() user: User,
+    @Res() res: Response,
+  ): Promise<any> {
     return await this.authService.logout(user, res);
   }
 }

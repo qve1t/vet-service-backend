@@ -74,17 +74,18 @@ export class AuthService {
     }
   }
 
-  async logout(user: User, res: Response) {
+  async logout(user: User, res: Response): Promise<any> {
     try {
       user.currentToken = null;
       await this.userRepository.save(user);
-      res.clearCookie('jwt', {
-        secure: false,
-        domain: 'localhost',
-        httpOnly: true,
-      });
 
-      return res.json({ ok: true });
+      return res
+        .clearCookie('jwt', {
+          secure: false,
+          domain: 'localhost',
+          httpOnly: true,
+        })
+        .json({ ok: true });
     } catch (err) {
       return res.json({ error: err.message });
     }
