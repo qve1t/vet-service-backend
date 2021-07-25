@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Response } from 'express';
-import { User } from 'src/user/user.entity';
+import { IsLoggedUser } from '../../interfaces/auth';
+import { User } from '../../user/user.entity';
 import { AuthController } from '../auth.controller';
 import { AuthService } from '../auth.service';
 import { LoginDto } from '../dto/login.dto';
@@ -69,6 +70,25 @@ describe('AuthController', () => {
 
       it('should return successfull logout response', () => {
         expect(logoutResponse).toEqual({ ok: true });
+      });
+    });
+  });
+
+  describe('isUserLogged', () => {
+    describe('when isUserLogged is called', () => {
+      let user: User;
+      let isUserLoggedResponse: IsLoggedUser;
+
+      beforeEach(async () => {
+        user = userStub;
+        isUserLoggedResponse = await controller.isUserLogged(user);
+      });
+
+      it('should return logged user response', () => {
+        expect(isUserLoggedResponse).toEqual({
+          isLogged: true,
+          email: user.email,
+        });
       });
     });
   });

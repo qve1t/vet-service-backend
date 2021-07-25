@@ -5,7 +5,6 @@ import { GetUserResponse } from '../interfaces/user';
 import { registerDto } from './dto/register.dto';
 import { User } from './user.entity';
 import { hashPassword } from '../utils/passwordHash';
-import { changePasswordDto } from './dto/changePassword.dto';
 
 @Injectable()
 export class UserService {
@@ -45,9 +44,9 @@ export class UserService {
   }
 
   async changePassword(
-    newPasswordData: changePasswordDto,
+    email: string,
+    newPassword: string,
   ): Promise<GetUserResponse> {
-    const { email, newPassword } = newPasswordData;
     const foundUser = await this.userRepository.findOne({ email: email });
 
     if (!foundUser) {

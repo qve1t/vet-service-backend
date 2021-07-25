@@ -8,6 +8,7 @@ import { LoginDto } from '../dto/login.dto';
 import { UserRepositoryMock } from './mocks/user.repository.mock';
 import { userStub } from './stub/user.stub';
 import { ResponseMock } from './mocks/response.mock';
+import { IsLoggedUser } from '../../interfaces/auth';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -86,6 +87,25 @@ describe('AuthService', () => {
 
       it('should return successfull logout response', () => {
         expect(logoutResponse).toEqual({ ok: true });
+      });
+    });
+  });
+
+  describe('isUserLogged', () => {
+    describe('when isUserLogged is called', () => {
+      let user: User;
+      let isUserLoggedResponse: IsLoggedUser;
+
+      beforeEach(async () => {
+        user = userStub;
+        isUserLoggedResponse = await service.isLogged(user);
+      });
+
+      it('should return logged user response', () => {
+        expect(isUserLoggedResponse).toEqual({
+          isLogged: true,
+          email: user.email,
+        });
       });
     });
   });

@@ -8,7 +8,6 @@ import { UserService } from '../user.service';
 import * as hashingUtil from '../../utils/passwordHash';
 import { UserRepositoryMock } from './mocks/user.repository.mock';
 import { userStub, secondUserStub } from './stubs/user.stub';
-import { changePasswordDto } from '../dto/changePassword.dto';
 
 describe('UserService', () => {
   let service: UserService;
@@ -132,38 +131,36 @@ describe('UserService', () => {
   describe('changePassword', () => {
     describe('when changePassword is called', () => {
       let savedUser: GetUserResponse;
-      let changePasswordDto: changePasswordDto;
+      let userEmail: string;
+      let newPassword: string;
       let hashedNewPassword: string;
 
       beforeEach(async () => {
-        changePasswordDto = {
-          email: userStub.email,
-          newPassword: userStub.password,
-        };
+        userEmail = userStub.email;
+        newPassword = userStub.password;
+
         jest
           .spyOn(hashingUtil, 'hashPassword')
           .mockResolvedValueOnce('abcd123');
         jest.spyOn(service, 'filterUserObject');
         hashedNewPassword = 'abcd123';
-        savedUser = await service.changePassword(changePasswordDto);
+        savedUser = await service.changePassword(userEmail, newPassword);
       });
 
       it('should check if user exists', () => {
         expect(repository.findOne).toBeCalledWith({
-          email: changePasswordDto.email,
+          email: userEmail,
         });
       });
 
       it('should hash the password', () => {
-        expect(hashingUtil.hashPassword).toBeCalledWith(
-          changePasswordDto.newPassword,
-        );
+        expect(hashingUtil.hashPassword).toBeCalledWith(newPassword);
       });
 
       it('should change users password and save user', () => {
         expect(repository.save).toBeCalledWith({
           id: userStub.id,
-          email: changePasswordDto.email,
+          email: userEmail,
           password: hashedNewPassword,
           currentToken: userStub.currentToken,
         });

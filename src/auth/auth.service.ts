@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from '../user/user.entity';
 import { JwtPayload } from './jwt.strategy';
 import { LoginDto } from './dto/login.dto';
+import { IsLoggedUser } from '../interfaces/auth';
 
 @Injectable()
 export class AuthService {
@@ -89,5 +90,12 @@ export class AuthService {
     } catch (err) {
       return res.json({ error: err.message });
     }
+  }
+
+  async isLogged(user: User): Promise<IsLoggedUser> {
+    return {
+      isLogged: true,
+      email: user.email,
+    };
   }
 }

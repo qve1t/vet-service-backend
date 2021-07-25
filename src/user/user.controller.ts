@@ -1,8 +1,18 @@
-import { Body, Controller, Get, Inject, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { UserObject } from '../decorators/userObject.decorator';
 
 import { GetUserResponse } from '../interfaces/user';
-import { changePasswordDto } from './dto/changePassword.dto';
 import { registerDto } from './dto/register.dto';
+import { User } from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -22,9 +32,11 @@ export class UserController {
   }
 
   @Patch('/change_password')
+  @UseGuards(AuthGuard('jwt'))
   async changePassword(
-    @Body() changePasswordData: changePasswordDto,
+    @Body() newPassword: string,
+    @UserObject() user: User,
   ): Promise<GetUserResponse> {
-    return await this.userSrevice.changePassword(changePasswordData);
+    return await this.userSrevice.changePassword(user.email, newPassword);
   }
 }

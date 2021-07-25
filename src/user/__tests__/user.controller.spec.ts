@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { userStub } from './stubs/user.stub';
 import { GetUserResponse } from '../../interfaces/user';
-import { changePasswordDto } from '../dto/changePassword.dto';
 import { registerDto } from '../dto/register.dto';
 import { UserController } from '../user.controller';
+import { User } from '../user.entity';
 import { UserService } from '../user.service';
 import { UserServiceMock } from './mocks/user.service.mock';
 import { userStubResponse } from './stubs/user.stub';
@@ -72,18 +73,20 @@ describe('UserController', () => {
   describe('changePassword', () => {
     describe('when changePassword is called', () => {
       let user: GetUserResponse;
-      let changePasswordDto: changePasswordDto;
+      let userToCall: User;
+      let newPassword: string;
 
       beforeEach(async () => {
-        changePasswordDto = {
-          email: userStubResponse.email,
-          newPassword: 'testnewpassword',
-        };
-        user = await controller.changePassword(changePasswordDto);
+        userToCall = userStub;
+        newPassword = 'testnewpassword';
+        user = await controller.changePassword(newPassword, userToCall);
       });
 
       it('it should call UserService', () => {
-        expect(service.changePassword).toBeCalledWith(changePasswordDto);
+        expect(service.changePassword).toBeCalledWith(
+          userToCall.email,
+          newPassword,
+        );
       });
 
       it('it should return a response with user', () => {
