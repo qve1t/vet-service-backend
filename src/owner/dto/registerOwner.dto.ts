@@ -5,9 +5,9 @@ import {
   IsPhoneNumber,
   MaxLength,
 } from 'class-validator';
-import { OwnerInterface } from '../../interfaces/owner';
+import { RegisterOwnerInterface } from '../../interfaces/owner';
 
-export class registerOwnerDto implements OwnerInterface {
+export class registerOwnerDto implements RegisterOwnerInterface {
   @IsNotEmpty()
   @MaxLength(64)
   name: string;

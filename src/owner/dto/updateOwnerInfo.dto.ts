@@ -6,9 +6,9 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { OwnerInfoToUpdate } from '../../interfaces/owner';
+import { OwnerInfoToUpdateInterface } from '../../interfaces/owner';
 
-export class updateOwnerInfoDto implements OwnerInfoToUpdate {
+export class updateOwnerInfoDto implements OwnerInfoToUpdateInterface {
   @IsString()
   @IsNotEmpty()
   id: string;

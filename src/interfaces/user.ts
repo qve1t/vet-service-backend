@@ -5,6 +5,11 @@ export interface UserInterface {
   currentToken: string | null;
 }
 
+export interface RegisterUserInterface {
+  email: string;
+  password: string;
+}
+
 export type GetUserResponse = {
   id: string;
   email: string;

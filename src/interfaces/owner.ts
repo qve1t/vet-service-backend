@@ -6,7 +6,9 @@ export interface OwnerInterface {
   address: string | null;
 }
 
-export interface OwnerInfoToUpdate {
+export type RegisterOwnerInterface = OwnerInterface;
+
+export interface OwnerInfoToUpdateInterface {
   id: string;
   phone: string | null;
   email: string | null;
@@ -23,6 +25,11 @@ export interface OwnerQueryInterface {
   page: number;
   limit: number;
   nameSurname: string;
+}
+
+export interface AssignPetToOwnerInterface {
+  ownerId: string;
+  petId: string;
 }
 
 export type GetOwnerResponse = OwnerInterface;

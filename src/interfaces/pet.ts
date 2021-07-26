@@ -20,6 +20,8 @@ export interface PetInterface {
   others: string | null;
 }
 
+export type PetRegisterInterface = PetInterface;
+
 export interface PetInfoToUpdateInterface {
   id: string;
   chipId: string | null;
@@ -48,6 +50,11 @@ export interface PetQueryInterface {
   limit: number;
   page: number;
   name: string;
+}
+
+export interface AssignOwnerToPetInterface {
+  petId: string;
+  ownerId: string;
 }
 
 export interface PetRegisterResponse {

@@ -1,6 +1,8 @@
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 
-export class registerDto {
+import { RegisterUserInterface } from '../../interfaces/user';
+
+export class registerDto implements RegisterUserInterface {
   @IsNotEmpty()
   @IsEmail()
   email: string;

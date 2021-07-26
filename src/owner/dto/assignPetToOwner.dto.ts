@@ -1,6 +1,8 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class assignPetToOwnerDto {
+import { AssignPetToOwnerInterface } from '../../interfaces/owner';
+
+export class assignPetToOwnerDto implements AssignPetToOwnerInterface {
   @IsString()
   @IsNotEmpty()
   ownerId: string;
