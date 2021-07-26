@@ -37,8 +37,8 @@ describe('AuthController', () => {
 
       beforeEach(async () => {
         loginData = {
-          email: 'testEmail@test.com',
-          password: 'test1234',
+          email: userStub.email,
+          password: userStub.password,
         };
         loginResponse = await controller.loginUser(loginData, response);
       });
@@ -48,7 +48,10 @@ describe('AuthController', () => {
       });
 
       it('should return successfull login response', () => {
-        expect(loginResponse).toEqual({ ok: true });
+        expect(loginResponse).toEqual({
+          isLogged: true,
+          email: loginData.email,
+        });
       });
     });
   });
@@ -69,7 +72,7 @@ describe('AuthController', () => {
       });
 
       it('should return successfull logout response', () => {
-        expect(logoutResponse).toEqual({ ok: true });
+        expect(logoutResponse).toEqual({ isLogged: false, email: '' });
       });
     });
   });

@@ -69,7 +69,7 @@ export class AuthService {
           domain: 'localhost',
           httpOnly: true,
         })
-        .json({ ok: true });
+        .json({ isLogged: true, email: user });
     } catch (err) {
       return res.json({ error: err.message });
     }
@@ -86,7 +86,7 @@ export class AuthService {
           domain: 'localhost',
           httpOnly: true,
         })
-        .json({ ok: true });
+        .json({ isLogged: false, email: '' });
     } catch (err) {
       return res.json({ error: err.message });
     }

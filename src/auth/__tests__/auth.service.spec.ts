@@ -7,7 +7,7 @@ import { User } from '../../user/user.entity';
 import { LoginDto } from '../dto/login.dto';
 import { UserRepositoryMock } from './mocks/user.repository.mock';
 import { userStub } from './stub/user.stub';
-import { ResponseMock } from './mocks/response.mock';
+import { LoginResponseMock, LogoutResponseMock } from './mocks/response.mock';
 import { IsUserLoggedResponse } from '../../interfaces/auth';
 
 describe('AuthService', () => {
@@ -43,7 +43,7 @@ describe('AuthService', () => {
           password: 'test1234',
         };
         foundUser = userStub;
-        response = ResponseMock;
+        response = LoginResponseMock;
         jest.spyOn(bcrypt, 'compare');
         loginResponse = await service.login(loginData, response);
       });
@@ -61,7 +61,10 @@ describe('AuthService', () => {
         );
       });
       it('should return successfull login response', () => {
-        expect(loginResponse).toEqual({ ok: true });
+        expect(loginResponse).toEqual({
+          isLogged: true,
+          email: foundUser.email,
+        });
       });
     });
   });
@@ -74,7 +77,7 @@ describe('AuthService', () => {
 
       beforeEach(async () => {
         user = userStub;
-        response = ResponseMock;
+        response = LogoutResponseMock;
         logoutResponse = await service.logout(user, response);
       });
 
@@ -86,7 +89,7 @@ describe('AuthService', () => {
       });
 
       it('should return successfull logout response', () => {
-        expect(logoutResponse).toEqual({ ok: true });
+        expect(logoutResponse).toEqual({ isLogged: false, email: '' });
       });
     });
   });
