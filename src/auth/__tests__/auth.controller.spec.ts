@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Response } from 'express';
-import { IsLoggedUser } from '../../interfaces/auth';
+import { IsUserLoggedResponse } from '../../interfaces/auth';
 import { User } from '../../user/user.entity';
 import { AuthController } from '../auth.controller';
 import { AuthService } from '../auth.service';
@@ -77,11 +77,11 @@ describe('AuthController', () => {
   describe('isUserLogged', () => {
     describe('when isUserLogged is called', () => {
       let user: User;
-      let isUserLoggedResponse: IsLoggedUser;
+      let isUserLoggedResponse: IsUserLoggedResponse;
 
-      beforeEach(async () => {
+      beforeEach(() => {
         user = userStub;
-        isUserLoggedResponse = await controller.isUserLogged(user);
+        isUserLoggedResponse = controller.isUserLogged(user);
       });
 
       it('should return logged user response', () => {

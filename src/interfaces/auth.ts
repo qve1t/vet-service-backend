@@ -1,4 +1,4 @@
-export interface IsLoggedUser {
+export interface IsUserLoggedResponse {
   isLogged: boolean;
   email: string;
 }

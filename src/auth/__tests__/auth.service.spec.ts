@@ -8,7 +8,7 @@ import { LoginDto } from '../dto/login.dto';
 import { UserRepositoryMock } from './mocks/user.repository.mock';
 import { userStub } from './stub/user.stub';
 import { ResponseMock } from './mocks/response.mock';
-import { IsLoggedUser } from '../../interfaces/auth';
+import { IsUserLoggedResponse } from '../../interfaces/auth';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -94,11 +94,11 @@ describe('AuthService', () => {
   describe('isUserLogged', () => {
     describe('when isUserLogged is called', () => {
       let user: User;
-      let isUserLoggedResponse: IsLoggedUser;
+      let isUserLoggedResponse: IsUserLoggedResponse;
 
-      beforeEach(async () => {
+      beforeEach(() => {
         user = userStub;
-        isUserLoggedResponse = await service.isLogged(user);
+        isUserLoggedResponse = service.isLogged(user);
       });
 
       it('should return logged user response', () => {
