@@ -1,6 +1,7 @@
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { LoginUserInterface } from 'src/interfaces/auth';
 
-export class LoginDto {
+export class LoginDto implements LoginUserInterface {
   @IsString()
   @IsEmail()
   email: string;
