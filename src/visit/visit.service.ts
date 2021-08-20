@@ -111,6 +111,16 @@ export class VisitService {
     userId: string,
   ): Promise<VisitListReponse> {
     const { startDate, endDate } = query;
+    const parsedStartDate = new Date(startDate);
+    const parsedEndDate = new Date(endDate);
+    //check if dates are valid
+    if (isNaN(parsedStartDate.valueOf()) || isNaN(parsedEndDate.valueOf())) {
+      throw new HttpException(
+        'Date values are invalid',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const listOfVisits = await this.visitRepository.find({
       where: {
         dateTime: Between(startDate, endDate),
