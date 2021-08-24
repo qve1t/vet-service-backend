@@ -26,6 +26,14 @@ export class VisitService {
     registerVisitData: RegisterVisitDto,
     userId: string,
   ): Promise<VisitRegisterResponse> {
+    const parsedDate = new Date(registerVisitData.dateTime);
+    //check if dates are valid
+    if (isNaN(parsedDate.valueOf())) {
+      throw new HttpException(
+        'Date values are invalid',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     const sameHourVisit = await this.visitRepository.findOne({
       dateTime: registerVisitData.dateTime,
       userId: userId,
@@ -55,6 +63,7 @@ export class VisitService {
 
     const newVisit = this.visitRepository.create({
       ...registerVisitData,
+      dateTime: parsedDate,
       petOnVisit: visitPet,
       ownerOnVisit: visitOwner,
       userId: userId,
@@ -81,7 +90,22 @@ export class VisitService {
       throw new HttpException('Visit not found', HttpStatus.NOT_FOUND);
     }
 
-    visitToUpdate = { ...visitToUpdate, ...updateVisitData };
+    const parsedDate = updateVisitData.dateTime
+      ? new Date(updateVisitData.dateTime)
+      : null;
+    //check if dates are valid
+    if (parsedDate && isNaN(parsedDate.valueOf())) {
+      throw new HttpException(
+        'Date values are invalid',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    visitToUpdate = {
+      ...visitToUpdate,
+      ...updateVisitData,
+      ...(parsedDate && { dateTime: parsedDate }),
+    };
 
     await this.visitRepository.save(visitToUpdate);
 

@@ -69,7 +69,7 @@ export class AuthService {
           domain: 'localhost',
           httpOnly: true,
         })
-        .json({ isLogged: true, email: user });
+        .json({ isLogged: true, email: user.email });
     } catch (err) {
       return res.json({ error: err.message });
     }
