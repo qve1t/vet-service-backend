@@ -147,7 +147,7 @@ export class VisitService {
 
     const listOfVisits = await this.visitRepository.find({
       where: {
-        dateTime: Between(startDate, endDate),
+        dateTime: Between(parsedStartDate, parsedEndDate),
         userId: userId,
       },
       select: ['id', 'dateTime', 'name'],
