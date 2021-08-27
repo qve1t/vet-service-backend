@@ -74,6 +74,7 @@ export class OwnerService {
         'owner.address',
         'pets.id',
         'pets.name',
+        'pets.type',
       ])
       .getOne();
 

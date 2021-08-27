@@ -62,12 +62,33 @@ export class PetService {
   }
 
   async getPetDetails(petId: string, userId: string): Promise<Pet> {
-    const petToGet = await this.petRepository.findOne(
-      { id: petId, userId: userId },
-      {
-        relations: ['owner'],
-      },
-    );
+    const petToGet = await this.petRepository
+      .createQueryBuilder('pet')
+      .leftJoinAndSelect('pet.owner', 'owner')
+      .leftJoinAndSelect('pet.visits', 'visit')
+      .where({ id: petId, userId: userId })
+      .select([
+        'pet.name',
+        'pet.chipId',
+        'pet.tatooId',
+        'pet.type',
+        'pet.race',
+        'pet.age',
+        'pet.sex',
+        'pet.weight',
+        'pet.height',
+        'pet.length',
+        'pet.diseases',
+        'pet.others',
+        'owner.id',
+        'owner.name',
+        'owner.surname',
+        'visit.id',
+        'visit.dateTime',
+        'visit.name',
+      ])
+      .getOne();
+
     if (!petToGet) {
       throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
     }

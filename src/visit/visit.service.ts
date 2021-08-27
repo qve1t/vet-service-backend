@@ -116,12 +116,27 @@ export class VisitService {
   }
 
   async getVisitDetails(visitId: string, userId: string): Promise<Visit> {
-    const visitToGet = await this.visitRepository.findOne(
-      { id: visitId, userId: userId },
-      {
-        relations: ['petOnVisit', 'ownerOnVisit'],
-      },
-    );
+    const visitToGet = await this.visitRepository
+      .createQueryBuilder('visit')
+      .leftJoinAndSelect('visit.petOnVisit', 'pet')
+      .leftJoinAndSelect('visit.ownerOnVisit', 'owner')
+      .where({ id: visitId, userId: userId })
+      .select([
+        'visit.id',
+        'visit.dateTime',
+        'visit.name',
+        'visit.note',
+        'visit.interview',
+        'visit.description',
+        'visit.healing',
+        'pet.id',
+        'pet.name',
+        'pet.type',
+        'owner.id',
+        'owner.name',
+        'owner.surname',
+      ])
+      .getOne();
 
     if (!visitToGet) {
       throw new HttpException('Visit not found', HttpStatus.NOT_FOUND);
