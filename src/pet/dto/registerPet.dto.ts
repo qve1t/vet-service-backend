@@ -44,4 +44,7 @@ export class registerPetDto implements PetRegisterInterface {
 
   @IsOptional()
   others: string | null;
+
+  @IsOptional()
+  ownerId: string | null;
 }

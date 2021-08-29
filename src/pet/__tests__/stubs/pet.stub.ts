@@ -5,6 +5,7 @@ import {
   PetSexes,
 } from '../../../interfaces/pet';
 import { Pet } from '../../pet.entity';
+import { ownerStub } from './owner.stub';
 
 export const petStub: Pet = {
   id: 'testPetId',
@@ -30,7 +31,7 @@ export const petsListStub: PetListInterface[] = [
     id: 'testPetId',
     name: 'testPet',
     type: 'dog',
-    owner: null,
+    owner: ownerStub,
   },
 ];
 

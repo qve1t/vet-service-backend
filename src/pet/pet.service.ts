@@ -26,10 +26,24 @@ export class PetService {
     registerPetData: registerPetDto,
     userId: string,
   ): Promise<PetRegisterResponse> {
+    const ownerId = registerPetData.ownerId;
+    delete registerPetData.ownerId;
+
     const newPet = this.petRepository.create({
       ...registerPetData,
       userId: userId,
     });
+
+    //adding owner
+    if (ownerId) {
+      const owner = await this.ownerRepository.findOne({
+        id: ownerId,
+        userId: userId,
+      });
+
+      owner ? (newPet.owner = owner) : (newPet.owner = null);
+    }
+
     await this.petRepository.save(newPet);
 
     return {
@@ -42,6 +56,9 @@ export class PetService {
     updatePetInfoData: updatePetInfoDto,
     userId: string,
   ): Promise<PetUpdateResponse> {
+    const ownerId = updatePetInfoData.ownerId;
+    delete updatePetInfoData.ownerId;
+
     let petToUpdate = await this.petRepository.findOne({
       id: updatePetInfoData.id,
       userId: userId,
@@ -52,6 +69,15 @@ export class PetService {
     }
 
     petToUpdate = { ...petToUpdate, ...updatePetInfoData };
+
+    if (ownerId) {
+      const owner = await this.ownerRepository.findOne({
+        id: ownerId,
+        userId: userId,
+      });
+
+      owner ? (petToUpdate.owner = owner) : (petToUpdate.owner = null);
+    }
 
     await this.petRepository.save(petToUpdate);
 

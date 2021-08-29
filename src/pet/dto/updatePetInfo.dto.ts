@@ -39,4 +39,7 @@ export class updatePetInfoDto implements PetInfoToUpdateInterface {
 
   @IsOptional()
   others: string | null;
+
+  @IsOptional()
+  ownerId: string | null;
 }

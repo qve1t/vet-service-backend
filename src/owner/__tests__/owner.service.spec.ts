@@ -87,8 +87,8 @@ describe('OwnerService', () => {
     });
   });
 
-  describe('updatePetInfo', () => {
-    describe('when updatePetInfo is called', () => {
+  describe('updateOwnerInfo', () => {
+    describe('when updateOwnerInfo is called', () => {
       let foundOwner: Owner;
       let updateOwnerInfoData: updateOwnerInfoDto;
       let response: OwnerUpdateResponse;
@@ -143,14 +143,14 @@ describe('OwnerService', () => {
         expect(ownerRepository.findAndCount).toHaveBeenCalled();
       });
 
-      it('should return list of pets and count them', () => {
+      it('should return list of owners and count them', () => {
         expect(resultsResponse).toEqual(getOwnerListResponse);
       });
     });
   });
 
-  describe('deletePet', () => {
-    describe('when deletePet is called', () => {
+  describe('deleteOwner', () => {
+    describe('when deleteOwner is called', () => {
       let ownerId: string;
       let deleteResponse: OwnerDeleteResponse;
       let user: User;

@@ -20,7 +20,9 @@ export interface PetInterface {
   others: string | null;
 }
 
-export type PetRegisterInterface = PetInterface;
+export interface PetRegisterInterface extends PetInterface {
+  ownerId: string | null;
+}
 
 export interface PetInfoToUpdateInterface {
   id: string;
@@ -33,6 +35,7 @@ export interface PetInfoToUpdateInterface {
   length: number | null;
   diseases: string | null;
   others: string | null;
+  ownerId: string | null;
 }
 
 export interface PetListInterface {

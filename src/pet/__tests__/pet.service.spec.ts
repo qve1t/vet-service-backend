@@ -18,6 +18,7 @@ import { Pet } from '../pet.entity';
 import { PetService } from '../pet.service';
 import { OwnerRepositoryMock } from './mocks/owner.repository.mock';
 import { PetRepositoryMock } from './mocks/pet.repository.mock';
+import { ownerStub } from './stubs/owner.stub';
 import {
   getPetListResponse,
   petStub,
@@ -70,6 +71,7 @@ describe('PetService', () => {
           length: null,
           diseases: null,
           others: null,
+          ownerId: ownerStub.id,
         };
         userId = 'testUserId';
         createdPet = petStub;
@@ -79,6 +81,13 @@ describe('PetService', () => {
       it('should create new pet basing on data', () => {
         expect(petRepository.create).toBeCalledWith({
           ...registerPetData,
+          userId: userId,
+        });
+      });
+
+      it('should check if owner exist and add it to the pet', () => {
+        expect(ownerRepository.findOne).toBeCalledWith({
+          id: ownerStub.id,
           userId: userId,
         });
       });
@@ -112,6 +121,7 @@ describe('PetService', () => {
           length: null,
           diseases: null,
           others: null,
+          ownerId: ownerStub.id,
         };
         userId = 'testUserId';
         foundPet = petStub;
@@ -121,6 +131,13 @@ describe('PetService', () => {
       it('should check if pet to update exists', () => {
         expect(petRepository.findOne).toBeCalledWith({
           id: updatePetInfoData.id,
+          userId: userId,
+        });
+      });
+
+      it('should check if owner exist and add it to the pet', () => {
+        expect(ownerRepository.findOne).toBeCalledWith({
+          id: ownerStub.id,
           userId: userId,
         });
       });

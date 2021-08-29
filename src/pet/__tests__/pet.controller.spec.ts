@@ -21,6 +21,7 @@ import {
   petSuccessResponse,
 } from './stubs/pet.stub';
 import { userStub } from './stubs/user.stub';
+import { ownerStub } from './stubs/owner.stub';
 
 describe('PetController', () => {
   let controller: PetController;
@@ -104,6 +105,7 @@ describe('PetController', () => {
         length: null,
         diseases: null,
         others: null,
+        ownerId: ownerStub.id,
       };
       user = userStub;
       registerResponse = await controller.registerNewPet(registerPetData, user);
@@ -135,6 +137,7 @@ describe('PetController', () => {
         length: null,
         diseases: null,
         others: null,
+        ownerId: ownerStub.id,
       };
       user = userStub;
       updateResponse = await controller.updatePetInfo(updatePetInfoData, user);
