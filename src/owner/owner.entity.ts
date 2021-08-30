@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { OwnerInterface } from '../interfaces/owner';
+import { Note } from '../note/note.entity';
 import { Pet } from '../pet/pet.entity';
 import { Visit } from '../visit/visit.entity';
 
@@ -47,6 +48,9 @@ export class Owner implements OwnerInterface {
 
   @OneToMany(() => Visit, (entity) => entity.ownerOnVisit)
   visits: Visit[];
+
+  @OneToMany(() => Note, (entity) => entity.ownerNote)
+  notes: Note[];
 
   @Column()
   userId: string;

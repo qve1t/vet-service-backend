@@ -1,6 +1,7 @@
 import { PetInterface, PetSexes } from '../interfaces/pet';
 import { Owner } from '../owner/owner.entity';
 import { Visit } from '../visit/visit.entity';
+import { Note } from '../note/note.entity';
 import {
   Entity,
   Column,
@@ -91,6 +92,9 @@ export class Pet implements PetInterface {
     type: 'longtext',
   })
   others: string | null;
+
+  @ManyToOne(() => Note, (entity) => entity.petNote)
+  notes: Note;
 
   @ManyToOne(() => Owner, (entity) => entity.pets)
   owner: Owner;

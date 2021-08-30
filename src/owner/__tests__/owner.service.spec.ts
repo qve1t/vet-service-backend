@@ -139,7 +139,7 @@ describe('OwnerService', () => {
         resultsResponse = await service.getOwnersList(query, user.id);
       });
 
-      it('should call find owne in db', () => {
+      it('should call find owner in db', () => {
         expect(ownerRepository.findAndCount).toHaveBeenCalled();
       });
 
@@ -206,6 +206,7 @@ describe('OwnerService', () => {
           length: null,
           diseases: null,
           others: null,
+          notes: null,
           visits: null,
           owner: ownerStub,
           userId: 'test',

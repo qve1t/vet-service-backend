@@ -15,6 +15,7 @@ export const petStub: Pet = {
   length: null,
   diseases: null,
   others: null,
+  notes: null,
   owner: null,
   visits: null,
   userId: 'test',

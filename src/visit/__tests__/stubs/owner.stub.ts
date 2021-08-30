@@ -9,5 +9,6 @@ export const ownerStub: Owner = {
   phone: null,
   pets: null,
   visits: null,
+  notes: null,
   userId: 'test',
 };

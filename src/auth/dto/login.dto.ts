@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
-import { LoginUserInterface } from 'src/interfaces/auth';
+import { LoginUserInterface } from '../../interfaces/auth';
 
 export class LoginDto implements LoginUserInterface {
   @IsString()
