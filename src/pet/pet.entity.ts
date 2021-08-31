@@ -93,8 +93,8 @@ export class Pet implements PetInterface {
   })
   others: string | null;
 
-  @ManyToOne(() => Note, (entity) => entity.petNote)
-  notes: Note;
+  @OneToMany(() => Note, (entity) => entity.petNote)
+  notes: Note[];
 
   @ManyToOne(() => Owner, (entity) => entity.pets)
   owner: Owner;

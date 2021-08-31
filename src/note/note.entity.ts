@@ -1,8 +1,9 @@
 import { NoteInterface } from '../interfaces/note';
 import { Owner } from '../owner/owner.entity';
 import { Pet } from '../pet/pet.entity';
-import { Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity()
 export class Note implements NoteInterface {
   @PrimaryGeneratedColumn('uuid')
   id: string;

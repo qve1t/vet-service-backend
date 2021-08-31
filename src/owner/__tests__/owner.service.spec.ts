@@ -168,7 +168,7 @@ describe('OwnerService', () => {
         });
       });
 
-      it('should delete existing pet', () => {
+      it('should delete existing owner', () => {
         expect(ownerRepository.delete).toBeCalledWith(ownerId);
       });
 
