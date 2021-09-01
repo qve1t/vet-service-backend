@@ -92,6 +92,7 @@ export class PetService {
       .createQueryBuilder('pet')
       .leftJoinAndSelect('pet.owner', 'owner')
       .leftJoinAndSelect('pet.visits', 'visit')
+      .leftJoinAndSelect('pet.notes', 'notes')
       .where({ id: petId, userId: userId })
       .select([
         'pet.name',
@@ -112,6 +113,9 @@ export class PetService {
         'visit.id',
         'visit.dateTime',
         'visit.name',
+        'notes.id',
+        'notes.text',
+        'notes.dateTime',
       ])
       .getOne();
 

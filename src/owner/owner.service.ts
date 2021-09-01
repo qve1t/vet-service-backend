@@ -65,6 +65,7 @@ export class OwnerService {
     const ownerToGet = await this.ownerRepository
       .createQueryBuilder('owner')
       .leftJoinAndSelect('owner.pets', 'pets')
+      .leftJoinAndSelect('owner.notes', 'notes')
       .where({ id: ownerId, userId: userId })
       .select([
         'owner.name',
@@ -75,6 +76,9 @@ export class OwnerService {
         'pets.id',
         'pets.name',
         'pets.type',
+        'notes.id',
+        'notes.text',
+        'notes.dateTime',
       ])
       .getOne();
 
