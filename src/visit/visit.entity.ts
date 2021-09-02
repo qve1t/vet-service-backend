@@ -41,10 +41,14 @@ export class Visit implements VisitInterface {
   })
   healing: string | null;
 
-  @ManyToOne(() => Pet, (entity) => entity.visits)
+  @ManyToOne(() => Pet, (entity) => entity.visits, {
+    onDelete: 'SET NULL',
+  })
   petOnVisit: Pet;
 
-  @ManyToOne(() => Owner, (entity) => entity.visits)
+  @ManyToOne(() => Owner, (entity) => entity.visits, {
+    onDelete: 'SET NULL',
+  })
   ownerOnVisit: Owner;
 
   @Column()

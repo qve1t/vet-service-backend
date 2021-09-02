@@ -1,10 +1,4 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  IsPhoneNumber,
-  MaxLength,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
 import { RegisterOwnerInterface } from '../../interfaces/owner';
 
 export class registerOwnerDto implements RegisterOwnerInterface {
@@ -16,7 +10,6 @@ export class registerOwnerDto implements RegisterOwnerInterface {
   @MaxLength(64)
   surname: string;
 
-  @IsPhoneNumber()
   @MaxLength(16)
   @IsOptional()
   phone: string | null;

@@ -19,10 +19,14 @@ export class Note implements NoteInterface {
   })
   dateTime: Date;
 
-  @ManyToOne(() => Pet, (entity) => entity.notes)
+  @ManyToOne(() => Pet, (entity) => entity.notes, {
+    onDelete: 'SET NULL',
+  })
   petNote: Pet;
 
-  @ManyToOne(() => Owner, (entity) => entity.notes)
+  @ManyToOne(() => Owner, (entity) => entity.notes, {
+    onDelete: 'SET NULL',
+  })
   ownerNote: Owner;
 
   @Column()

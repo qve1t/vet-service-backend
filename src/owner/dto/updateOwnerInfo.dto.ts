@@ -2,7 +2,6 @@ import {
   IsEmail,
   IsNotEmpty,
   IsOptional,
-  IsPhoneNumber,
   IsString,
   MaxLength,
 } from 'class-validator';
@@ -13,7 +12,6 @@ export class updateOwnerInfoDto implements OwnerInfoToUpdateInterface {
   @IsNotEmpty()
   id: string;
 
-  @IsPhoneNumber()
   @MaxLength(16)
   @IsOptional()
   phone: string | null;

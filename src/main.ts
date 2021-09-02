@@ -12,7 +12,11 @@ async function bootstrap() {
     }),
   );
   app.use(cookieParser());
-  app.enableCors({ origin: 'http://localhost:3001', credentials: true }); // change before building production
+  app.enableCors({
+    origin: 'http://localhost:3001',
+    methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
+    credentials: true,
+  }); // change before building production
   await app.listen(3000);
 }
 bootstrap();

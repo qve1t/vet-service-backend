@@ -96,7 +96,9 @@ export class Pet implements PetInterface {
   @OneToMany(() => Note, (entity) => entity.petNote)
   notes: Note[];
 
-  @ManyToOne(() => Owner, (entity) => entity.pets)
+  @ManyToOne(() => Owner, (entity) => entity.pets, {
+    onDelete: 'SET NULL',
+  })
   owner: Owner;
 
   @OneToMany(() => Visit, (entity) => entity.petOnVisit)
