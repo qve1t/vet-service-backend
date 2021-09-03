@@ -1,5 +1,11 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-import { PetInfoToUpdateInterface } from '../../interfaces/pet';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { PetInfoToUpdateInterface, PetSexes } from '../../interfaces/pet';
 
 export class updatePetInfoDto implements PetInfoToUpdateInterface {
   @IsString()
@@ -21,6 +27,9 @@ export class updatePetInfoDto implements PetInfoToUpdateInterface {
   @IsNumber()
   @IsOptional()
   age: number | null;
+
+  @IsEnum(PetSexes)
+  sex: PetSexes;
 
   @IsNumber()
   @IsOptional()

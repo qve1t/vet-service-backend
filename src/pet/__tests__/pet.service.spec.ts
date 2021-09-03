@@ -116,6 +116,7 @@ describe('PetService', () => {
           tatooId: null,
           race: null,
           age: 18,
+          sex: PetSexes.MALE_CASTRATED,
           weight: 20,
           height: null,
           length: null,

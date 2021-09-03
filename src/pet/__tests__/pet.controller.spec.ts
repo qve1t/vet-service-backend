@@ -132,6 +132,7 @@ describe('PetController', () => {
         tatooId: null,
         race: 'york',
         age: 5,
+        sex: PetSexes.MALE_CASTRATED,
         weight: null,
         height: null,
         length: null,

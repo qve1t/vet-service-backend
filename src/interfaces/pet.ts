@@ -30,6 +30,7 @@ export interface PetInfoToUpdateInterface {
   tatooId: string | null;
   race: string | null;
   age: number | null;
+  sex: PetSexes;
   weight: number | null;
   height: number | null;
   length: number | null;

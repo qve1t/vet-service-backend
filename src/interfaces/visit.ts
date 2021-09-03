@@ -14,6 +14,12 @@ export interface VisitRegisterInterface extends VisitInterface {
 
 export interface VisitUPdateInterface extends VisitInterface {
   id: string;
+  dateTime: Date;
+  name: string;
+  note: string | null;
+  interview: string | null;
+  description: string | null;
+  healing: string | null;
 }
 
 export interface VisitGetQuery {
