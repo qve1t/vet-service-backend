@@ -5,4 +5,5 @@ export const userStub: User = {
   email: 'testemail123@test.com',
   password: 'testpassword',
   currentToken: 'asd',
+  refreshToken: 'aaa',
 };

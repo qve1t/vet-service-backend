@@ -23,4 +23,10 @@ export class User implements UserInterface {
     default: null,
   })
   currentToken: string | null;
+
+  @Column({
+    nullable: true,
+    default: null,
+  })
+  refreshToken: string | null;
 }

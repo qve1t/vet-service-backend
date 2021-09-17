@@ -163,6 +163,7 @@ describe('UserService', () => {
           email: userEmail,
           password: hashedNewPassword,
           currentToken: userStub.currentToken,
+          refreshToken: userStub.refreshToken,
         });
       });
 

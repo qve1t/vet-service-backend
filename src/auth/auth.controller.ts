@@ -14,6 +14,7 @@ import { UserObject } from '../decorators/userObject.decorator';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { IsUserLoggedResponse } from '../interfaces/auth';
+import { RefreshTokenAuthGuard } from '../guards/refreshTokenAuth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -34,6 +35,12 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<any> {
     return await this.authService.logout(user, res);
+  }
+
+  @Get('/refreshTokens')
+  @UseGuards(RefreshTokenAuthGuard)
+  async refreshTokens(@UserObject() user: User, @Res() res: Response) {
+    return await this.authService.refreshUsersTokens(user, res);
   }
 
   @Get('/isLogged')

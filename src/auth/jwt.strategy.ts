@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Strategy } from 'passport-jwt';
 import { Repository } from 'typeorm';
 import { User } from '../user/user.entity';
+import { COOKIES_NAMES } from './cookiesData';
 
 export interface JwtPayload {
   id: string;
@@ -11,7 +12,7 @@ export interface JwtPayload {
 
 function cookieExtractor(req: any): null | string {
   if (req && req.cookies) {
-    return req.cookies?.jwt ?? null;
+    return req.cookies?.[COOKIES_NAMES.JWT] ?? null;
   }
   return null;
 }
