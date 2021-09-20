@@ -17,15 +17,15 @@ import {
   NoteUpdateResponse,
 } from '../../interfaces/note';
 import { User } from '../../user/user.entity';
-import { userStub } from '../../auth/__tests__/stub/user.stub';
+import { userStub } from '../../__tests__/stubs/user.stub';
 import {
   getNotesListResponse,
   noteStub,
   noteSuccessResponse,
-} from './stubs/note.stub';
+} from '../../__tests__/stubs/note.stub';
 import { RegisterNoteDto } from '../dto/RegisterNote.dto';
-import { ownerStub } from './stubs/owner.stub';
-import { petStub } from './stubs/pet.stub';
+import { ownerStub } from '../../__tests__/stubs/owner.stub';
+import { petStub } from '../../__tests__/stubs/pet.stub';
 import { UpdateNoteDto } from '../dto/UpdateNote.dto';
 
 describe('NoteService', () => {

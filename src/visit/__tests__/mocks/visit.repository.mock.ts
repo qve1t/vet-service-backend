@@ -1,4 +1,7 @@
-import { visitListResponse, visitStub } from '../stubs/visit.stub';
+import {
+  visitListResponse,
+  visitStub,
+} from '../../../__tests__/stubs/visit.stub';
 
 export const VisitRepositoryMock = {
   findOne: jest.fn().mockResolvedValue(visitStub),

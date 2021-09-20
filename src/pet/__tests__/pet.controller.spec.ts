@@ -19,9 +19,9 @@ import {
   getPetListResponse,
   petStub,
   petSuccessResponse,
-} from './stubs/pet.stub';
-import { userStub } from './stubs/user.stub';
-import { ownerStub } from './stubs/owner.stub';
+} from '../../__tests__/stubs/pet.stub';
+import { userStub } from '../../__tests__/stubs/user.stub';
+import { ownerStub } from '../../__tests__/stubs/owner.stub';
 
 describe('PetController', () => {
   let controller: PetController;

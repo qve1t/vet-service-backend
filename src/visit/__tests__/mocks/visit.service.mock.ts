@@ -2,7 +2,7 @@ import {
   visitListResponse,
   visitStub,
   visitSuccessResponse,
-} from '../stubs/visit.stub';
+} from '../../../__tests__/stubs/visit.stub';
 
 export const VisitServiceMock = {
   getVisitsForDay: jest.fn().mockResolvedValue(visitListResponse),

@@ -8,7 +8,7 @@ import { AuthService } from '../auth.service';
 import { LoginDto } from '../dto/login.dto';
 import { AuthServiceMock } from './mocks/auth.service.mock';
 import { RefreshTokenAuthGuardMock } from './mocks/refreshTokenAuth.guard.mock';
-import { userStub } from './stub/user.stub';
+import { userStub } from '../../__tests__/stubs/user.stub';
 
 describe('AuthController', () => {
   let controller: AuthController;

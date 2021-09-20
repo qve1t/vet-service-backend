@@ -1,8 +1,8 @@
 import {
   VisitListReponse,
   VisitRegisterResponse,
-} from '../../../interfaces/visit';
-import { Visit } from '../../visit.entity';
+} from '../../interfaces/visit';
+import { Visit } from '../../visit/visit.entity';
 import { ownerStub } from './owner.stub';
 import { petStub } from './pet.stub';
 

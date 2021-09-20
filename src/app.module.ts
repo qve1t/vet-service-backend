@@ -8,6 +8,7 @@ import { PetModule } from './pet/pet.module';
 import { VisitModule } from './visit/visit.module';
 import { AuthModule } from './auth/auth.module';
 import { NoteModule } from './note/note.module';
+import { MedicineModule } from './medicine/medicine.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { NoteModule } from './note/note.module';
     VisitModule,
     AuthModule,
     NoteModule,
+    MedicineModule,
   ],
   controllers: [AppController],
   providers: [AppService],

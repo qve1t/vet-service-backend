@@ -1,4 +1,4 @@
-import { userStub } from '../stub/user.stub';
+import { userStub } from '../../../__tests__/stubs/user.stub';
 
 export const AuthServiceMock = {
   login: jest.fn().mockResolvedValue({ isLogged: true, email: userStub.email }),

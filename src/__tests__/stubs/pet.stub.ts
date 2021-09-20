@@ -3,9 +3,10 @@ import {
   PetListResponse,
   PetRegisterResponse,
   PetSexes,
-} from '../../../interfaces/pet';
-import { Pet } from '../../pet.entity';
+} from '../../interfaces/pet';
+import { Pet } from '../../pet/pet.entity';
 import { ownerStub } from './owner.stub';
+import { userStub } from './user.stub';
 
 export const petStub: Pet = {
   id: 'testPetId',
@@ -24,7 +25,7 @@ export const petStub: Pet = {
   notes: null,
   owner: null,
   visits: null,
-  userId: 'testUserId',
+  userId: userStub.id,
 };
 
 export const petsListStub: PetListInterface[] = [

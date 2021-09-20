@@ -13,14 +13,14 @@ import { VisitController } from '../visit.controller';
 import { Visit } from '../visit.entity';
 import { VisitService } from '../visit.service';
 import { VisitServiceMock } from './mocks/visit.service.mock';
-import { ownerStub } from './stubs/owner.stub';
-import { petStub } from './stubs/pet.stub';
-import { userStub } from './stubs/user.stub';
+import { ownerStub } from '../../__tests__/stubs/owner.stub';
+import { petStub } from '../../__tests__/stubs/pet.stub';
+import { userStub } from '../../__tests__/stubs/user.stub';
 import {
   visitListResponse,
   visitStub,
   visitSuccessResponse,
-} from './stubs/visit.stub';
+} from '../../__tests__/stubs/visit.stub';
 
 describe('VisitController', () => {
   let controller: VisitController;

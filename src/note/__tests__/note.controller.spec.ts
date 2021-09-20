@@ -17,8 +17,8 @@ import {
   getNotesListResponse,
   noteStub,
   noteSuccessResponse,
-} from './stubs/note.stub';
-import { userStub } from './stubs/user.stub';
+} from '../../__tests__/stubs/note.stub';
+import { userStub } from '../../__tests__/stubs/user.stub';
 
 describe('NoteController', () => {
   let controller: NoteController;

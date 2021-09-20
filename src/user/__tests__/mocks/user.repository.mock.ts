@@ -1,4 +1,4 @@
-import { userStub, secondUserStub } from '../stubs/user.stub';
+import { userStub, secondUserStub } from '../../../__tests__/stubs/user.stub';
 
 export const UserRepositoryMock = {
   find: jest.fn().mockResolvedValue([userStub]),

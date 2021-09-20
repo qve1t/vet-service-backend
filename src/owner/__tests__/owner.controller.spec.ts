@@ -19,8 +19,8 @@ import {
   getOwnerListResponse,
   ownerStub,
   ownerSuccessResponse,
-} from './stubs/owner.stub';
-import { userStub } from './stubs/user.stub';
+} from '../../__tests__/stubs/owner.stub';
+import { userStub } from '../../__tests__/stubs/user.stub';
 
 describe('OwnerController', () => {
   let controller: OwnerController;

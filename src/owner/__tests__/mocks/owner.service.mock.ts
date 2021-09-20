@@ -2,7 +2,7 @@ import {
   getOwnerListResponse,
   ownerStub,
   ownerSuccessResponse,
-} from '../stubs/owner.stub';
+} from '../../../__tests__/stubs/owner.stub';
 
 export const OwnerServiceMock = {
   registerNewOwner: jest.fn().mockResolvedValue(ownerSuccessResponse),

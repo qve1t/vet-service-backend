@@ -18,12 +18,12 @@ import { Pet } from '../pet.entity';
 import { PetService } from '../pet.service';
 import { OwnerRepositoryMock } from './mocks/owner.repository.mock';
 import { PetRepositoryMock } from './mocks/pet.repository.mock';
-import { ownerStub } from './stubs/owner.stub';
+import { ownerStub } from '../../__tests__/stubs/owner.stub';
 import {
   getPetListResponse,
   petStub,
   petSuccessResponse,
-} from './stubs/pet.stub';
+} from '../../__tests__/stubs/pet.stub';
 
 describe('PetService', () => {
   let service: PetService;

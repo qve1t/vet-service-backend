@@ -1,4 +1,7 @@
-import { getNotesListResponse, noteSuccessResponse } from '../stubs/note.stub';
+import {
+  getNotesListResponse,
+  noteSuccessResponse,
+} from '../../../__tests__/stubs/note.stub';
 
 export const NoteServiceMock = {
   getNotesList: jest.fn().mockResolvedValue(getNotesListResponse),

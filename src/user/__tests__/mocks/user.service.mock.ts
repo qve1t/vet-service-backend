@@ -1,4 +1,4 @@
-import { userStubResponse } from '../stubs/user.stub';
+import { userStubResponse } from '../../../__tests__/stubs/user.stub';
 
 export const UserServiceMock = {
   returnAllUsers: jest.fn().mockResolvedValue([userStubResponse]),

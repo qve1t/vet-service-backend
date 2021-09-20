@@ -1,5 +1,5 @@
-import { User } from '../../user.entity';
-import { GetUserResponse } from '../../../interfaces/user';
+import { User } from '../../user/user.entity';
+import { GetUserResponse } from '../../interfaces/user';
 
 export const userStubResponse: GetUserResponse = {
   id: 'testid',

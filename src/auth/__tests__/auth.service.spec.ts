@@ -6,7 +6,7 @@ import { AuthService } from '../auth.service';
 import { User } from '../../user/user.entity';
 import { LoginDto } from '../dto/login.dto';
 import { UserRepositoryMock } from './mocks/user.repository.mock';
-import { userStub } from './stub/user.stub';
+import { userStub } from '../../__tests__/stubs/user.stub';
 import { LoginResponseMock, LogoutResponseMock } from './mocks/response.mock';
 import { IsUserLoggedResponse } from '../../interfaces/auth';
 

@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { userStub } from './stubs/user.stub';
+import { userStub } from '../../__tests__/stubs/user.stub';
 import { GetUserResponse } from '../../interfaces/user';
 import { registerDto } from '../dto/register.dto';
 import { UserController } from '../user.controller';
 import { User } from '../user.entity';
 import { UserService } from '../user.service';
 import { UserServiceMock } from './mocks/user.service.mock';
-import { userStubResponse } from './stubs/user.stub';
+import { userStubResponse } from '../../__tests__/stubs/user.stub';
 
 describe('UserController', () => {
   let controller: UserController;

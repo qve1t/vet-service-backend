@@ -7,7 +7,7 @@ import { User } from '../user.entity';
 import { UserService } from '../user.service';
 import * as hashingUtil from '../../utils/passwordHash';
 import { UserRepositoryMock } from './mocks/user.repository.mock';
-import { userStub, secondUserStub } from './stubs/user.stub';
+import { userStub, secondUserStub } from '../../__tests__/stubs/user.stub';
 
 describe('UserService', () => {
   let service: UserService;

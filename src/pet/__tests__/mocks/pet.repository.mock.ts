@@ -1,4 +1,4 @@
-import { petStub } from '../stubs/pet.stub';
+import { petStub } from '../../../__tests__/stubs/pet.stub';
 
 export const PetRepositoryMock = {
   create: jest.fn().mockReturnValue(petStub),

@@ -2,7 +2,7 @@ import {
   petSuccessResponse,
   petStub,
   getPetListResponse,
-} from '../stubs/pet.stub';
+} from '../../../__tests__/stubs/pet.stub';
 
 export const PetServiceMock = {
   registerNewPet: jest.fn().mockResolvedValue(petSuccessResponse),

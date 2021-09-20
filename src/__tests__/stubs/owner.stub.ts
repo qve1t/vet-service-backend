@@ -2,8 +2,8 @@ import {
   OwnerListInterface,
   OwnerListResponse,
   OwnerRegisterResponse,
-} from '../../../interfaces/owner';
-import { Owner } from '../../owner.entity';
+} from '../../interfaces/owner';
+import { Owner } from '../../owner/owner.entity';
 
 export const ownerStub: Owner = {
   id: 'testOwnerId',

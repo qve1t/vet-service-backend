@@ -1,4 +1,4 @@
-import { noteStub, notesListStub } from '../stubs/note.stub';
+import { noteStub, notesListStub } from '../../../__tests__/stubs/note.stub';
 
 export const NoteRepositoryMock = {
   findOne: jest.fn().mockResolvedValue(noteStub),

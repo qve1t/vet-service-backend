@@ -22,9 +22,9 @@ import {
   getOwnerListResponse,
   ownerStub,
   ownerSuccessResponse,
-} from './stubs/owner.stub';
+} from '../../__tests__/stubs/owner.stub';
 import { User } from '../../user/user.entity';
-import { userStub } from './stubs/user.stub';
+import { userStub } from '../../__tests__/stubs/user.stub';
 
 describe('OwnerService', () => {
   let service: OwnerService;
@@ -209,7 +209,7 @@ describe('OwnerService', () => {
           notes: null,
           visits: null,
           owner: ownerStub,
-          userId: 'test',
+          userId: userStub.id,
         };
       });
 

@@ -18,14 +18,14 @@ import { VisitService } from '../visit.service';
 import { OwnerRepositoryMock } from './mocks/owner.repository.mock';
 import { PetRepositoryMock } from './mocks/pet.repository.mock';
 import { VisitRepositoryMock } from './mocks/visit.repository.mock';
-import { ownerStub } from './stubs/owner.stub';
-import { petStub } from './stubs/pet.stub';
+import { ownerStub } from '../../__tests__/stubs/owner.stub';
+import { petStub } from '../../__tests__/stubs/pet.stub';
 import {
   visitListResponse,
   visitStub,
   visitSuccessResponse,
-} from './stubs/visit.stub';
-import { userStub } from './stubs/user.stub';
+} from '../../__tests__/stubs/visit.stub';
+import { userStub } from '../../__tests__/stubs/user.stub';
 
 describe('VisitService', () => {
   let service: VisitService;
