@@ -10,7 +10,6 @@ export class RegisterVisitDto implements VisitRegisterInterface {
   name: string;
 
   @IsString()
-  @IsNotEmpty()
   @IsOptional()
   note: string | null;
 
