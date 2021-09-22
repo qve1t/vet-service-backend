@@ -1,11 +1,19 @@
 import { userStub } from '../../../__tests__/stubs/user.stub';
 
 export const LoginResponseMock = {
-  cookie: jest.fn().mockReturnValue(null),
-  json: jest.fn().mockReturnValue({ isLogged: true, email: userStub.email }),
+  cookie: jest.fn().mockReturnValue({
+    cookie: jest.fn().mockReturnValue({
+      json: jest
+        .fn()
+        .mockReturnValue({ isLogged: true, email: userStub.email }),
+    }),
+  }),
 };
 
 export const LogoutResponseMock = {
-  cookie: jest.fn().mockReturnValue(null),
-  json: jest.fn().mockReturnValue({ isLogged: false, email: '' }),
+  clearCookie: jest.fn().mockReturnValue({
+    clearCookie: jest.fn().mockReturnValue({
+      json: jest.fn().mockReturnValue({ isLogged: false, email: '' }),
+    }),
+  }),
 };

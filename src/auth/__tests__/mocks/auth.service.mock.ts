@@ -10,4 +10,5 @@ export const AuthServiceMock = {
     isLogged: true,
     email: userStub.email,
   }),
+  generateUnusedToken: jest.fn().mockReturnValue('asdasdasdad'),
 };

@@ -1,10 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 import { GetUserResponse } from '../interfaces/user';
 import { registerDto } from './dto/register.dto';
 import { User } from './user.entity';
 import { hashPassword } from '../utils/passwordHash';
+import { changePasswordDto } from './dto/changePassword.dto';
 
 @Injectable()
 export class UserService {
@@ -44,21 +46,23 @@ export class UserService {
   }
 
   async changePassword(
-    email: string,
-    newPassword: string,
+    user: User,
+    changePasswordData: changePasswordDto,
   ): Promise<GetUserResponse> {
-    const foundUser = await this.userRepository.findOne({ email: email });
+    const { newPassword, oldPassword } = changePasswordData;
 
-    if (!foundUser) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    const matchPassword = await bcrypt.compare(oldPassword, user.password);
+
+    if (!matchPassword) {
+      throw new HttpException('Old password is wrong', HttpStatus.FORBIDDEN);
     }
 
     const hashedNewPassword = await hashPassword(newPassword);
 
-    foundUser.password = hashedNewPassword;
+    user.password = hashedNewPassword;
 
-    await this.userRepository.save(foundUser);
+    await this.userRepository.save(user);
 
-    return this.filterUserObject(foundUser);
+    return this.filterUserObject(user);
   }
 }

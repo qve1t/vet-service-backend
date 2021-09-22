@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 import { GetUserResponse } from '../../interfaces/user';
 import { registerDto } from '../dto/register.dto';
 import { User } from '../user.entity';
@@ -8,6 +9,7 @@ import { UserService } from '../user.service';
 import * as hashingUtil from '../../utils/passwordHash';
 import { UserRepositoryMock } from './mocks/user.repository.mock';
 import { userStub, secondUserStub } from '../../__tests__/stubs/user.stub';
+import { changePasswordDto } from '../dto/changePassword.dto';
 
 describe('UserService', () => {
   let service: UserService;
@@ -131,36 +133,40 @@ describe('UserService', () => {
   describe('changePassword', () => {
     describe('when changePassword is called', () => {
       let savedUser: GetUserResponse;
-      let userEmail: string;
-      let newPassword: string;
+      let userToCall: User;
+      let newPasswordData: changePasswordDto;
       let hashedNewPassword: string;
 
       beforeEach(async () => {
-        userEmail = userStub.email;
-        newPassword = userStub.password;
+        (bcrypt.compare as jest.Mock) = jest.fn().mockReturnValue(true);
+        userToCall = userStub;
+        newPasswordData = {
+          oldPassword: userStub.password,
+          newPassword: 'newPassword',
+        };
 
         jest
           .spyOn(hashingUtil, 'hashPassword')
           .mockResolvedValueOnce('abcd123');
         jest.spyOn(service, 'filterUserObject');
         hashedNewPassword = 'abcd123';
-        savedUser = await service.changePassword(userEmail, newPassword);
+        savedUser = await service.changePassword(userToCall, newPasswordData);
       });
 
-      it('should check if user exists', () => {
-        expect(repository.findOne).toBeCalledWith({
-          email: userEmail,
-        });
+      it('should check if old password is correct', () => {
+        expect(bcrypt.compare).toBeCalledTimes(1);
       });
 
       it('should hash the password', () => {
-        expect(hashingUtil.hashPassword).toBeCalledWith(newPassword);
+        expect(hashingUtil.hashPassword).toBeCalledWith(
+          newPasswordData.newPassword,
+        );
       });
 
       it('should change users password and save user', () => {
         expect(repository.save).toBeCalledWith({
           id: userStub.id,
-          email: userEmail,
+          email: userStub.email,
           password: hashedNewPassword,
           currentToken: userStub.currentToken,
           refreshToken: userStub.refreshToken,

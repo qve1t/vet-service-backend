@@ -7,6 +7,7 @@ import { User } from '../user.entity';
 import { UserService } from '../user.service';
 import { UserServiceMock } from './mocks/user.service.mock';
 import { userStubResponse } from '../../__tests__/stubs/user.stub';
+import { changePasswordDto } from '../dto/changePassword.dto';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -74,18 +75,21 @@ describe('UserController', () => {
     describe('when changePassword is called', () => {
       let user: GetUserResponse;
       let userToCall: User;
-      let newPassword: string;
+      let newPasswordData: changePasswordDto;
 
       beforeEach(async () => {
         userToCall = userStub;
-        newPassword = 'testnewpassword';
-        user = await controller.changePassword(newPassword, userToCall);
+        newPasswordData = {
+          oldPassword: userStub.password,
+          newPassword: 'newPassword',
+        };
+        user = await controller.changePassword(newPasswordData, userToCall);
       });
 
       it('it should call UserService', () => {
         expect(service.changePassword).toBeCalledWith(
-          userToCall.email,
-          newPassword,
+          userToCall,
+          newPasswordData,
         );
       });
 

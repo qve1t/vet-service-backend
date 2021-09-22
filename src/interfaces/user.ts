@@ -10,6 +10,11 @@ export interface RegisterUserInterface {
   password: string;
 }
 
+export interface ChangePasswordUserInterface {
+  oldPassword: string;
+  newPassword: string;
+}
+
 export type GetUserResponse = {
   id: string;
   email: string;

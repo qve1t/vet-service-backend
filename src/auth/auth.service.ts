@@ -9,7 +9,11 @@ import { User } from '../user/user.entity';
 import { JwtPayload } from './jwt.strategy';
 import { LoginDto } from './dto/login.dto';
 import { IsUserLoggedResponse } from '../interfaces/auth';
-import { COOKIES_NAMES, COOKIES_OPTIONS } from './cookiesData';
+import {
+  COOKIES_NAMES,
+  COOKIES_OPTIONS,
+  COOKIE_EXPIRE_TIME,
+} from './cookiesData';
 
 @Injectable()
 export class AuthService {
@@ -17,32 +21,20 @@ export class AuthService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  private async generateUnusedToken(user: User): Promise<string> {
+  private async generateUnusedToken(
+    user: User,
+    tokenName: 'currentToken' | 'refreshToken',
+  ): Promise<string> {
     //gemerate new token and check if none of the users has it
     let token: string;
     let userWithGeneratedToken: User;
     do {
       token = uuid();
       userWithGeneratedToken = await this.userRepository.findOne({
-        currentToken: token,
+        [tokenName]: token,
       });
     } while (!!userWithGeneratedToken);
-    user.currentToken = token;
-    await this.userRepository.save(user);
-
-    return token;
-  }
-
-  private async generateUnusedRefreshToken(user: User): Promise<string> {
-    let token: string;
-    let userWithGeneratedToken: User;
-    do {
-      token = uuid();
-      userWithGeneratedToken = await this.userRepository.findOne({
-        refreshToken: token,
-      });
-    } while (!!userWithGeneratedToken);
-    user.refreshToken = token;
+    user[tokenName] = token;
     await this.userRepository.save(user);
 
     return token;
@@ -51,9 +43,8 @@ export class AuthService {
   private createJwtToken(currentTokenId: string, expireTime: number): string {
     //create new jwt
     const payload: JwtPayload = { id: currentTokenId };
-    const expiresIn = expireTime;
     const accessToken = sign(payload, 'secretKeyToChange', {
-      expiresIn: expiresIn,
+      expiresIn: expireTime,
     });
     return accessToken;
   }
@@ -65,7 +56,7 @@ export class AuthService {
       });
 
       if (!user) {
-        return res.json({ error: 'Invalid login data' });
+        return res.status(401).json({ error: 'Invalid login data' });
       }
 
       const matchPassword = await bcrypt.compare(
@@ -74,17 +65,17 @@ export class AuthService {
       );
 
       if (!matchPassword) {
-        return res.json({ error: 'Invalid login data' });
+        return res.status(401).json({ error: 'Invalid login data' });
       }
 
       const token = this.createJwtToken(
-        await this.generateUnusedToken(user),
-        60 * 60 * 24,
+        await this.generateUnusedToken(user, 'currentToken'),
+        COOKIE_EXPIRE_TIME.JWT,
       );
 
       const refreshToken = this.createJwtToken(
-        await this.generateUnusedRefreshToken(user),
-        60 * 60 * 24 * 7,
+        await this.generateUnusedToken(user, 'refreshToken'),
+        COOKIE_EXPIRE_TIME.REFRESH,
       );
 
       return res
@@ -92,7 +83,7 @@ export class AuthService {
         .cookie(COOKIES_NAMES.REFRESH, refreshToken, COOKIES_OPTIONS)
         .json({ isLogged: true, email: user.email });
     } catch (err) {
-      return res.json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 
@@ -107,20 +98,20 @@ export class AuthService {
         .clearCookie(COOKIES_NAMES.REFRESH, COOKIES_OPTIONS)
         .json({ isLogged: false, email: '' });
     } catch (err) {
-      return res.json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 
   async refreshUsersTokens(user: User, res: Response): Promise<any> {
     try {
       const token = this.createJwtToken(
-        await this.generateUnusedToken(user),
-        60 * 60 * 24,
+        await this.generateUnusedToken(user, 'currentToken'),
+        COOKIE_EXPIRE_TIME.JWT,
       );
 
       const refreshToken = this.createJwtToken(
-        await this.generateUnusedRefreshToken(user),
-        60 * 60 * 24 * 7,
+        await this.generateUnusedToken(user, 'refreshToken'),
+        COOKIE_EXPIRE_TIME.REFRESH,
       );
 
       return res
@@ -128,7 +119,7 @@ export class AuthService {
         .cookie(COOKIES_NAMES.REFRESH, refreshToken, COOKIES_OPTIONS)
         .json({ isLogged: true, email: user.email });
     } catch (err) {
-      return res.json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   }
 

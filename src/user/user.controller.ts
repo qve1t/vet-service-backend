@@ -11,6 +11,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserObject } from '../decorators/userObject.decorator';
 
 import { GetUserResponse } from '../interfaces/user';
+import { changePasswordDto } from './dto/changePassword.dto';
 import { registerDto } from './dto/register.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
@@ -34,9 +35,9 @@ export class UserController {
   @Patch('/change_password')
   @UseGuards(AuthGuard('jwt'))
   async changePassword(
-    @Body() newPassword: string,
+    @Body() changePasswordData: changePasswordDto,
     @UserObject() user: User,
   ): Promise<GetUserResponse> {
-    return await this.userSrevice.changePassword(user.email, newPassword);
+    return await this.userSrevice.changePassword(user, changePasswordData);
   }
 }
