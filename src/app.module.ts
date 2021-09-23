@@ -9,9 +9,11 @@ import { VisitModule } from './visit/visit.module';
 import { AuthModule } from './auth/auth.module';
 import { NoteModule } from './note/note.module';
 import { MedicineModule } from './medicine/medicine.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot(),
     UserModule,
     OwnerModule,

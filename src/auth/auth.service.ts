@@ -43,7 +43,7 @@ export class AuthService {
   private createJwtToken(currentTokenId: string, expireTime: number): string {
     //create new jwt
     const payload: JwtPayload = { id: currentTokenId };
-    const accessToken = sign(payload, 'secretKeyToChange', {
+    const accessToken = sign(payload, process.env.SECRET, {
       expiresIn: expireTime,
     });
     return accessToken;

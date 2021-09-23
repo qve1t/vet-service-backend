@@ -13,10 +13,10 @@ async function bootstrap() {
   );
   app.use(cookieParser());
   app.enableCors({
-    origin: 'http://localhost:3001',
+    origin: process.env.ORIGIN || 'http://localhost:3001',
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
     credentials: true,
-  }); // change before building production
-  await app.listen(3000);
+  });
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
