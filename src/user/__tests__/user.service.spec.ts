@@ -138,7 +138,9 @@ describe('UserService', () => {
       let hashedNewPassword: string;
 
       beforeEach(async () => {
-        (bcrypt.compare as jest.Mock) = jest.fn().mockReturnValue(true);
+        jest
+          .spyOn(bcrypt, 'compare')
+          .mockImplementation(() => Promise.resolve(true));
         userToCall = userStub;
         newPasswordData = {
           oldPassword: userStub.password,
