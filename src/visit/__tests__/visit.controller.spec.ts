@@ -129,6 +129,7 @@ describe('VisitController', () => {
         description: 'test description',
         healing: null,
         interview: null,
+        medicines: null,
       };
       user = userStub;
       updateResponse = await controller.updateVisit(updateVisitData, user);

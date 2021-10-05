@@ -28,4 +28,14 @@ export class UpdateVisitDto implements VisitUPdateInterface {
 
   @IsOptional()
   healing: string | null;
+
+  @IsOptional()
+  medicines:
+    | [
+        {
+          medicineId: string;
+          count: number;
+        },
+      ]
+    | null;
 }

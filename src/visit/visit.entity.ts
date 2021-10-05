@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Medicine } from 'src/medicine/medicine.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { VisitInterface } from '../interfaces/visit';
 import { Owner } from '../owner/owner.entity';
 import { Pet } from '../pet/pet.entity';
@@ -50,6 +58,13 @@ export class Visit implements VisitInterface {
     onDelete: 'SET NULL',
   })
   ownerOnVisit: Owner;
+
+  @ManyToMany(() => Medicine, (entity) => entity.visits)
+  @JoinTable()
+  medicinesOnVisit: Array<{
+    count: number;
+    medicine: Medicine;
+  }>;
 
   @Column()
   userId: string;

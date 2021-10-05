@@ -134,6 +134,7 @@ describe('VisitService', () => {
           description: 'this is test description',
           healing: null,
           interview: null,
+          medicines: null,
         };
 
         foundVisit = visitStub;

@@ -20,6 +20,14 @@ export interface VisitUPdateInterface extends VisitInterface {
   interview: string | null;
   description: string | null;
   healing: string | null;
+  medicines:
+    | [
+        {
+          medicineId: string;
+          count: number;
+        },
+      ]
+    | null;
 }
 
 export interface VisitGetQuery {

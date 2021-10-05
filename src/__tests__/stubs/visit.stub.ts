@@ -16,6 +16,7 @@ export const visitStub: Visit = {
   interview: null,
   ownerOnVisit: ownerStub,
   petOnVisit: petStub,
+  medicinesOnVisit: [],
   userId: 'test',
 };
 
