@@ -26,9 +26,12 @@ import {
   visitSuccessResponse,
 } from '../../__tests__/stubs/visit.stub';
 import { userStub } from '../../__tests__/stubs/user.stub';
+import { MedicineService } from '../../medicine/medicine.service';
+import { MedicineServiceMock } from './mocks/medicine.service.mock';
 
 describe('VisitService', () => {
   let service: VisitService;
+  let medicineService: MedicineService;
   let visitRepository: Repository<Visit>;
   let ownerRepository: Repository<Owner>;
   let petRepository: Repository<Pet>;
@@ -37,13 +40,18 @@ describe('VisitService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         VisitService,
+        MedicineService,
         { provide: getRepositoryToken(Visit), useValue: VisitRepositoryMock },
         { provide: getRepositoryToken(Pet), useValue: PetRepositoryMock },
         { provide: getRepositoryToken(Owner), useValue: OwnerRepositoryMock },
       ],
-    }).compile();
+    })
+      .overrideProvider(MedicineService)
+      .useValue(MedicineServiceMock)
+      .compile();
 
     service = module.get<VisitService>(VisitService);
+    medicineService = module.get<MedicineService>(MedicineService);
     visitRepository = module.get(getRepositoryToken(Visit));
     ownerRepository = module.get(getRepositoryToken(Owner));
     petRepository = module.get(getRepositoryToken(Pet));

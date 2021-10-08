@@ -113,55 +113,58 @@ export class VisitService {
       ...(parsedDate && { dateTime: parsedDate }),
     };
 
-    await Promise.all(
-      //update or add medicines from the array
-      medicines.map(async (elem: VisitUpdateSingleMedicine) => {
-        //check if meddicine is already assigned to the visit
-        const medicineToUpdate = await this.medicineService.getMedicineOnVisit(
-          updateVisitData.id,
-          elem.medicineId,
-          userId,
-        );
-        //if medicine is already assigned to the visit, update it
-        if (medicineToUpdate) {
-          const countDifference = elem.count - medicineToUpdate.count;
-          medicineToUpdate.count = elem.count;
-
-          await this.medicineService.saveUpdatedMedicineOnVisit(
-            medicineToUpdate,
-          );
-          //change magazine count of medicine
-          await this.medicineService.chengeMedicineMagazineCount(
-            elem.medicineId,
-            countDifference,
-            userId,
-          );
-          //otherwise create new assign
-        } else {
+    if (Array.isArray(medicines)) {
+      await Promise.all(
+        //update or add medicines from the array
+        medicines.map(async (elem: VisitUpdateSingleMedicine) => {
+          //check if meddicine is already assigned to the visit
           const medicineToUpdate =
-            await this.medicineService.getMedicineDetails(
+            await this.medicineService.getMedicineOnVisit(
+              updateVisitData.id,
               elem.medicineId,
               userId,
             );
-          //check if medicine exists and assign it
+          //if medicine is already assigned to the visit, update it
           if (medicineToUpdate) {
-            await this.medicineService.addMedicineToVisit(
-              visitToUpdate,
-              medicineToUpdate,
-              elem.count,
-              userId,
-            );
+            const countDifference = elem.count - medicineToUpdate.count;
+            medicineToUpdate.count = elem.count;
 
+            await this.medicineService.saveUpdatedMedicineOnVisit(
+              medicineToUpdate,
+            );
             //change magazine count of medicine
             await this.medicineService.chengeMedicineMagazineCount(
               elem.medicineId,
-              elem.count,
+              countDifference,
               userId,
             );
+            //otherwise create new assign
+          } else {
+            const medicineToUpdate =
+              await this.medicineService.getMedicineDetails(
+                elem.medicineId,
+                userId,
+              );
+            //check if medicine exists and assign it
+            if (medicineToUpdate) {
+              await this.medicineService.addMedicineToVisit(
+                visitToUpdate,
+                medicineToUpdate,
+                elem.count,
+                userId,
+              );
+
+              //change magazine count of medicine
+              await this.medicineService.chengeMedicineMagazineCount(
+                elem.medicineId,
+                elem.count,
+                userId,
+              );
+            }
           }
-        }
-      }),
-    );
+        }),
+      );
+    }
 
     await this.visitRepository.save(visitToUpdate);
 

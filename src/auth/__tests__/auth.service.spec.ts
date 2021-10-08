@@ -38,6 +38,7 @@ describe('AuthService', () => {
       let loginResponse: any;
 
       beforeEach(async () => {
+        process.env.SECRET = 'testsecret';
         jest
           .spyOn(bcrypt, 'compare')
           .mockImplementation(() => Promise.resolve(true));
