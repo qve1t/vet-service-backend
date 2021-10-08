@@ -2,7 +2,7 @@ import {
   NoteListInterface,
   NoteListResponse,
   NoteRegisterResponse,
-} from 'src/interfaces/note';
+} from '../../interfaces/note';
 import { Note } from '../../note/note.entity';
 import { ownerStub } from './owner.stub';
 import { petStub } from './pet.stub';

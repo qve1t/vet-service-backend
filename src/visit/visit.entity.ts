@@ -1,15 +1,20 @@
-import { Medicine } from 'src/medicine/medicine.entity';
+import { Medicine } from '../medicine/medicine.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  ManyToMany,
-  JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { VisitInterface } from '../interfaces/visit';
 import { Owner } from '../owner/owner.entity';
 import { Pet } from '../pet/pet.entity';
+import { MedicineOnVisit } from '../medicine/medicineOnVisit.entity';
+
+export interface SingleMedicineListElem {
+  medicine: Medicine;
+  count: number;
+}
 
 @Entity()
 export class Visit implements VisitInterface {
@@ -59,12 +64,8 @@ export class Visit implements VisitInterface {
   })
   ownerOnVisit: Owner;
 
-  @ManyToMany(() => Medicine, (entity) => entity.visits)
-  @JoinTable()
-  medicinesOnVisit: Array<{
-    count: number;
-    medicine: Medicine;
-  }>;
+  @OneToMany(() => MedicineOnVisit, (entity) => entity.visit)
+  medicinesOnVisit: Medicine[];
 
   @Column()
   userId: string;

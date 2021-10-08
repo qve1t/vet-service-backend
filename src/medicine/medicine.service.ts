@@ -6,17 +6,21 @@ import {
   MedicineQueryInterface,
   MedicineRegisterResponse,
   MedicineUpdateResponse,
-} from 'src/interfaces/medicine';
+} from '../interfaces/medicine';
+import { Visit } from '../visit/visit.entity';
 import { Like, Repository } from 'typeorm';
 import { RegisterMedicineDto } from './dto/RegisterMedicine.dto';
 import { UpdateMedicineDto } from './dto/UpdateMedicine.dto';
 import { Medicine } from './medicine.entity';
+import { MedicineOnVisit } from './medicineOnVisit.entity';
 
 @Injectable()
 export class MedicineService {
   constructor(
     @InjectRepository(Medicine)
     private medicineRepository: Repository<Medicine>,
+    @InjectRepository(MedicineOnVisit)
+    private medicineOnVisitRepository: Repository<MedicineOnVisit>,
   ) {}
 
   async registerNewMedicine(
@@ -123,7 +127,7 @@ export class MedicineService {
       throw new HttpException('Medicine not found', HttpStatus.NOT_FOUND);
     }
 
-    medicineToChange.magazineCount += changeValue;
+    medicineToChange.magazineCount -= changeValue;
 
     await this.medicineRepository.save(medicineToChange);
 
@@ -151,5 +155,46 @@ export class MedicineService {
       id: medicineId,
       status: 'ok',
     };
+  }
+
+  ///////////////////////////////////////
+
+  async addMedicineToVisit(
+    visit: Visit,
+    medicine: Medicine,
+    count: number,
+    userId: string,
+  ): Promise<void> {
+    const newMedicineOnVisit = this.medicineOnVisitRepository.create({
+      visit: visit,
+      medicine: medicine,
+      count: count,
+      userId: userId,
+    });
+
+    await this.medicineOnVisitRepository.save(newMedicineOnVisit);
+  }
+
+  async saveUpdatedMedicineOnVisit(medicine: MedicineOnVisit): Promise<void> {
+    await this.medicineOnVisitRepository.save(medicine);
+  }
+
+  async getMedicineOnVisit(
+    visitId: string,
+    medicineId: string,
+    userId: string,
+  ): Promise<MedicineOnVisit | undefined> {
+    return await this.medicineOnVisitRepository.findOne({
+      relations: ['visit', 'medicine'],
+      where: {
+        visit: {
+          id: visitId,
+        },
+        medicine: {
+          id: medicineId,
+        },
+        userId: userId,
+      },
+    });
   }
 }

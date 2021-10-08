@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Visit } from '../visit/visit.entity';
 import { MedicineInterface } from '../interfaces/medicine';
+import { MedicineOnVisit } from './medicineOnVisit.entity';
 
 @Entity()
 export class Medicine implements MedicineInterface {
@@ -32,7 +33,7 @@ export class Medicine implements MedicineInterface {
   })
   magazineCount: number;
 
-  @ManyToMany(() => Visit, (entity) => entity.medicinesOnVisit)
+  @OneToMany(() => MedicineOnVisit, (entity) => entity.medicine)
   visits: Visit[];
 
   @Column()

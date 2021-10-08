@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-import { MedicineUpdateInterface } from 'src/interfaces/medicine';
+import { MedicineUpdateInterface } from '../../interfaces/medicine';
 
 export class UpdateMedicineDto implements MedicineUpdateInterface {
   @IsString()

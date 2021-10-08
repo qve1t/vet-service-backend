@@ -12,6 +12,11 @@ export interface VisitRegisterInterface extends VisitInterface {
   petId: string;
 }
 
+export interface VisitUpdateSingleMedicine {
+  medicineId: string;
+  count: number;
+}
+
 export interface VisitUPdateInterface extends VisitInterface {
   id: string;
   dateTime: Date;
@@ -20,14 +25,7 @@ export interface VisitUPdateInterface extends VisitInterface {
   interview: string | null;
   description: string | null;
   healing: string | null;
-  medicines:
-    | [
-        {
-          medicineId: string;
-          count: number;
-        },
-      ]
-    | null;
+  medicines: VisitUpdateSingleMedicine[] | null;
 }
 
 export interface VisitGetQuery {

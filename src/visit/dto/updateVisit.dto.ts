@@ -1,5 +1,26 @@
-import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { VisitUPdateInterface } from '../../interfaces/visit';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import {
+  VisitUPdateInterface,
+  VisitUpdateSingleMedicine,
+} from '../../interfaces/visit';
+
+class SingleMedicine implements VisitUpdateSingleMedicine {
+  @IsString()
+  @IsNotEmpty()
+  medicineId: string;
+
+  @IsNumber()
+  count: number;
+}
 
 export class UpdateVisitDto implements VisitUPdateInterface {
   @IsString()
@@ -30,12 +51,8 @@ export class UpdateVisitDto implements VisitUPdateInterface {
   healing: string | null;
 
   @IsOptional()
-  medicines:
-    | [
-        {
-          medicineId: string;
-          count: number;
-        },
-      ]
-    | null;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SingleMedicine)
+  medicines: SingleMedicine[] | null;
 }

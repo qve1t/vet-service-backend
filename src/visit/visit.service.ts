@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Owner } from '../owner/owner.entity';
 import { Pet } from '../pet/pet.entity';
@@ -11,12 +11,15 @@ import {
   VisitUpdateResponse,
   VisitGetQuery,
   VisitListReponse,
+  VisitUpdateSingleMedicine,
 } from '../interfaces/visit';
 import { UpdateVisitDto } from './dto/updateVisit.dto';
+import { MedicineService } from '../medicine/medicine.service';
 
 @Injectable()
 export class VisitService {
   constructor(
+    @Inject(MedicineService) private readonly medicineService: MedicineService,
     @InjectRepository(Visit) private visitRepository: Repository<Visit>,
     @InjectRepository(Pet) private petRepository: Repository<Pet>,
     @InjectRepository(Owner) private ownerRepository: Repository<Owner>,
@@ -90,6 +93,9 @@ export class VisitService {
       throw new HttpException('Visit not found', HttpStatus.NOT_FOUND);
     }
 
+    const medicines = updateVisitData.medicines;
+    delete updateVisitData.medicines;
+
     const parsedDate = updateVisitData.dateTime
       ? new Date(updateVisitData.dateTime)
       : null;
@@ -107,6 +113,56 @@ export class VisitService {
       ...(parsedDate && { dateTime: parsedDate }),
     };
 
+    await Promise.all(
+      //update or add medicines from the array
+      medicines.map(async (elem: VisitUpdateSingleMedicine) => {
+        //check if meddicine is already assigned to the visit
+        const medicineToUpdate = await this.medicineService.getMedicineOnVisit(
+          updateVisitData.id,
+          elem.medicineId,
+          userId,
+        );
+        //if medicine is already assigned to the visit, update it
+        if (medicineToUpdate) {
+          const countDifference = elem.count - medicineToUpdate.count;
+          medicineToUpdate.count = elem.count;
+
+          await this.medicineService.saveUpdatedMedicineOnVisit(
+            medicineToUpdate,
+          );
+          //change magazine count of medicine
+          await this.medicineService.chengeMedicineMagazineCount(
+            elem.medicineId,
+            countDifference,
+            userId,
+          );
+          //otherwise create new assign
+        } else {
+          const medicineToUpdate =
+            await this.medicineService.getMedicineDetails(
+              elem.medicineId,
+              userId,
+            );
+          //check if medicine exists and assign it
+          if (medicineToUpdate) {
+            await this.medicineService.addMedicineToVisit(
+              visitToUpdate,
+              medicineToUpdate,
+              elem.count,
+              userId,
+            );
+
+            //change magazine count of medicine
+            await this.medicineService.chengeMedicineMagazineCount(
+              elem.medicineId,
+              elem.count,
+              userId,
+            );
+          }
+        }
+      }),
+    );
+
     await this.visitRepository.save(visitToUpdate);
 
     return {
@@ -120,6 +176,8 @@ export class VisitService {
       .createQueryBuilder('visit')
       .leftJoinAndSelect('visit.petOnVisit', 'pet')
       .leftJoinAndSelect('visit.ownerOnVisit', 'owner')
+      .leftJoinAndSelect('visit.medicinesOnVisit', 'medicinesOnVisit')
+      .leftJoinAndSelect('medicinesOnVisit.medicine', 'medicine')
       .where({ id: visitId, userId: userId })
       .select([
         'visit.id',
@@ -135,6 +193,8 @@ export class VisitService {
         'owner.id',
         'owner.name',
         'owner.surname',
+        'medicinesOnVisit',
+        'medicine',
       ])
       .getOne();
 

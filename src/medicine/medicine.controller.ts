@@ -12,15 +12,15 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { UserObject } from 'src/decorators/userObject.decorator';
+import { UserObject } from '../decorators/userObject.decorator';
 import {
   MedicineDeleteResponse,
   MedicineListResponse,
   MedicineQueryInterface,
   MedicineRegisterResponse,
   MedicineUpdateResponse,
-} from 'src/interfaces/medicine';
-import { User } from 'src/user/user.entity';
+} from '../interfaces/medicine';
+import { User } from '../user/user.entity';
 import { RegisterMedicineDto } from './dto/RegisterMedicine.dto';
 import { UpdateMedicineDto } from './dto/UpdateMedicine.dto';
 import { Medicine } from './medicine.entity';
