@@ -9,6 +9,7 @@ export type RegisterMedicineInterface = MedicineInterface;
 
 export interface MedicineUpdateInterface {
   id: string;
+  name: string | null;
   count: number | null;
   magazineCount: number | null;
   description: string | null;

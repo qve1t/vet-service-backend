@@ -7,6 +7,10 @@ export class UpdateMedicineDto implements MedicineUpdateInterface {
   id: string;
 
   @IsOptional()
+  @IsString()
+  name: string | null;
+
+  @IsOptional()
   @IsNumber()
   count: number | null;
 
