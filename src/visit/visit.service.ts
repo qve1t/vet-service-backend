@@ -85,8 +85,11 @@ export class VisitService {
     userId: string,
   ): Promise<VisitUpdateResponse> {
     let visitToUpdate = await this.visitRepository.findOne({
-      id: updateVisitData.id,
-      userId: userId,
+      relations: ['medicinesOnVisit', 'medicinesOnVisit.medicine'],
+      where: {
+        id: updateVisitData.id,
+        userId: userId,
+      },
     });
 
     if (!visitToUpdate) {
@@ -164,7 +167,29 @@ export class VisitService {
           }
         }),
       );
+
+      const medicinesToDelete = visitToUpdate.medicinesOnVisit.filter(
+        (elem) =>
+          !medicines.some(
+            (medicine) => elem.medicine.id === medicine.medicineId,
+          ),
+      );
+
+      await Promise.all(
+        medicinesToDelete.map(async (medicineToDelete) => {
+          //change medicines count when you deleted it
+          await this.medicineService.chengeMedicineMagazineCount(
+            medicineToDelete.medicine.id,
+            -medicineToDelete.count,
+            userId,
+          );
+          await this.medicineService.deleteMedicineOnVisit(medicineToDelete);
+        }),
+      );
     }
+
+    // delete medicinesOnVisit from visit object to not override previously saved medicinesOnVisit
+    delete visitToUpdate.medicinesOnVisit;
 
     await this.visitRepository.save(visitToUpdate);
 
@@ -196,8 +221,9 @@ export class VisitService {
         'owner.id',
         'owner.name',
         'owner.surname',
-        'medicinesOnVisit',
-        'medicine',
+        'medicinesOnVisit.count',
+        'medicine.id',
+        'medicine.name',
       ])
       .getOne();
 

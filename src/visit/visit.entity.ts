@@ -65,7 +65,7 @@ export class Visit implements VisitInterface {
   ownerOnVisit: Owner;
 
   @OneToMany(() => MedicineOnVisit, (entity) => entity.visit)
-  medicinesOnVisit: Medicine[];
+  medicinesOnVisit: MedicineOnVisit[];
 
   @Column()
   userId: string;

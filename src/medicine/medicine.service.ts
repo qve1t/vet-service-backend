@@ -179,6 +179,10 @@ export class MedicineService {
     await this.medicineOnVisitRepository.save(medicine);
   }
 
+  async deleteMedicineOnVisit(medicine: MedicineOnVisit): Promise<void> {
+    await this.medicineOnVisitRepository.delete(medicine);
+  }
+
   async getMedicineOnVisit(
     visitId: string,
     medicineId: string,

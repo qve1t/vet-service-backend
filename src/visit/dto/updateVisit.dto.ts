@@ -37,7 +37,6 @@ export class UpdateVisitDto implements VisitUPdateInterface {
   name: string;
 
   @IsString()
-  @IsNotEmpty()
   @IsOptional()
   note: string | null;
 
