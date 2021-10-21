@@ -1,13 +1,21 @@
 # Vet service - backend
 
-This project was written to work with [this app](https://github.com/qve1t/vet-service-frontend).
+Backend written for [Vet service - frontend](https://github.com/qve1t/vet-service-frontend).
 
-### In preparation:
+## Requirements
 
-- Medicines module
+1. MySQL database
 
-### When it will be ready?
+## Installation
 
-When it will be done
+1. `yarn install`
+2. Set .env file
+3. Set ormconfig.json file
 
-### More informations will be added soon...
+## Usage
+
+1. `yarn start` or `nest start`
+
+## License
+
+[MIT](https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt) © [qve1t](https://github.com/qve1t)
